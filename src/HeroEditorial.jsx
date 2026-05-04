@@ -29,13 +29,9 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
       </svg>
 
       <div className="container" style={{ position: "relative" }}>
-        {/* Eyebrow + breadcrumb institucional */}
+        {/* Eyebrow institucional */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
           <Eyebrow color="primary">UCA Emprende · Fundación UCA</Eyebrow>
-          <span style={{ width: 32, height: 1, background: "var(--color-border-default)" }} />
-          <span style={{ fontSize: 13, color: "var(--color-text-secondary)", fontWeight: 400 }}>
-            Curso académico 2025/26
-          </span>
         </div>
 
         {/* Bloque titular gigante */}
