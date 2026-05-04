@@ -100,9 +100,9 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
         </div>
 
         {/* Ticker cifras */}
-        <div style={{ marginTop: 80, borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", padding: "28px 0" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32, alignItems: "center" }}>
-            <StatInline value="45" suffix=" años" label="acompañando al emprendimiento UCA" />
+        <div style={{ marginTop: 80, borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", padding: "32px 0" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 40, alignItems: "stretch" }}>
+            <StatInline value="45" suffix="años" label="acompañando al emprendimiento UCA" />
             <StatInline value="450" suffix="+" label="emprendedores y emprendedoras formados" />
             <StatInline value="28" label="startups activas en cartera" />
             <StatInline value="6,2" suffix="M€" label="financiación captada por proyectos UCA" />
@@ -114,21 +114,45 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
 };
 
 const StatInline = ({ value, suffix, label }) => (
-  <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+  <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 10 }}>
     <div
       style={{
-        fontSize: 44,
+        fontSize: 38,
         fontWeight: 900,
         lineHeight: 1,
         letterSpacing: "-0.025em",
         color: "var(--color-brand-primary)",
         fontFamily: "var(--font-family-primary)",
+        whiteSpace: "nowrap",
+        display: "flex",
+        alignItems: "baseline",
+        gap: 4,
       }}
     >
-      {value}
-      {suffix && <span style={{ color: "var(--color-brand-accent)", fontWeight: 900 }}>{suffix}</span>}
+      <span>{value}</span>
+      {suffix && (
+        <span
+          style={{
+            color: "var(--color-brand-accent)",
+            fontWeight: 900,
+            fontSize: 22,
+            letterSpacing: "-0.01em",
+            lineHeight: 1,
+          }}
+        >
+          {suffix}
+        </span>
+      )}
     </div>
-    <div style={{ fontSize: 13, lineHeight: 1.35, color: "var(--color-text-secondary)", maxWidth: 180 }}>
+    <div
+      style={{
+        fontSize: 13,
+        lineHeight: 1.4,
+        color: "var(--color-text-secondary)",
+        fontWeight: 400,
+        minHeight: 36,
+      }}
+    >
       {label}
     </div>
   </div>
