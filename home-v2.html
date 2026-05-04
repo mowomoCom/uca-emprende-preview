@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCA Emprende — Donde las ideas se convierten en empresas</title>
+  <meta name="description" content="Espacio de emprendimiento de la Universidad de Cádiz. Actividades, coworking El Olivillo, programas y acompañamiento para estudiantes, egresados y personal UCA.">
+
+  <!-- Google Fonts: Lato (obligatoria por sistema UCA) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap">
+
+  <!-- Lottie Player (para futura sustitución por un .lottie oficial) -->
+  <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> -->
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — DESIGN.md v1 (fuente de verdad)
+       ============================================================ */
+    :root {
+      --color-brand-primary: #005877;
+      --color-brand-accent: #E87B00;
+      --color-brand-neutral: #6B6E6D;
+      --color-header-dark: #2e3d43;
+      --color-text-primary: #1a2428;
+      --color-text-body: #3c3c3b;
+      --color-text-secondary: #6B6E6D;
+      --color-text-tertiary: #9ca3af;
+      --color-text-accent: #E87B00;
+      --color-bg-base: #ffffff;
+      --color-bg-alt: #f7f9fb;
+      --color-bg-banda: #ededed;
+      --color-bg-muted: #f0f2f5;
+      --color-bg-dark: #2e3d43;
+      --color-bg-accent-tint: #fff1e0;
+      --color-bg-brand-tint: #e6f0f4;
+      --color-border-subtle: #e5e7eb;
+      --color-border-default: #d1d5db;
+      --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+      --shadow-md: 0 1px 2px rgba(16, 24, 40, 0.04), 0 2px 8px rgba(0, 88, 119, 0.04);
+      --shadow-lg: 0 4px 12px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(0, 88, 119, 0.08);
+      --shadow-xl: 0 12px 24px rgba(16, 24, 40, 0.08), 0 24px 48px rgba(0, 88, 119, 0.10);
+      --shadow-focus: 0 0 0 3px rgba(232, 123, 0, 0.25);
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+      --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+      --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px;
+      --radius-xl: 16px; --radius-2xl: 24px; --radius-full: 9999px;
+      --font-family-primary: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --container-max: 1280px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-family-primary);
+      font-size: 17px; line-height: 1.6;
+      color: var(--color-text-body);
+      background: var(--color-bg-base);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; transition: color .15s ease; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--space-6); }
+
+    /* ============================================================
+       TYPOGRAPHY
+       ============================================================ */
+    h1, h2, h3, h4 { font-family: var(--font-family-primary); color: var(--color-text-primary); }
+    .eyebrow {
+      font-size: 14px; font-weight: 700; line-height: 1.2;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-brand-accent);
+    }
+    .display-hero { font-size: 72px; font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; }
+    .h1 { font-size: 56px; font-weight: 900; line-height: 1.1; letter-spacing: -0.015em; }
+    .h2 { font-size: 40px; font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
+    .h3 { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.005em; }
+    .h4 { font-size: 22px; font-weight: 700; line-height: 1.3; }
+    .body-lg { font-size: 20px; line-height: 1.55; }
+    .caption { font-size: 13px; line-height: 1.4; letter-spacing: 0.01em; color: var(--color-text-secondary); }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 16px; font-weight: 700; line-height: 1; letter-spacing: 0.02em;
+      padding: 14px 28px; border-radius: var(--radius-md);
+      transition: all .15s ease; box-shadow: var(--shadow-sm);
+    }
+    .btn-primary { background: var(--color-brand-accent); color: #fff; }
+    .btn-primary:hover { background: #cc6a00; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(232,123,0,0.25); }
+    .btn-secondary { background: var(--color-brand-primary); color: #fff; }
+    .btn-secondary:hover { background: #004864; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,88,119,0.25); }
+    .btn-ghost { background: transparent; color: var(--color-brand-primary); border: 1px solid var(--color-brand-primary); box-shadow: none; }
+    .btn-ghost:hover { background: var(--color-bg-brand-tint); }
+    .btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+    /* ============================================================
+       01 — INTRANET BAR UCA
+       ============================================================ */
+    .intranet-bar {
+      background: var(--color-header-dark); color: #f0f0f0;
+      font-size: 13px; height: 40px; display: flex; align-items: center;
+    }
+    .intranet-bar .container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .intranet-bar ul { list-style: none; display: flex; gap: var(--space-5); }
+    .intranet-bar a { opacity: 0.85; }
+    .intranet-bar a:hover { opacity: 1; color: var(--color-brand-accent); }
+
+    /* ============================================================
+       02 — HEADER / NAV
+       ============================================================ */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: saturate(140%) blur(8px);
+      height: 88px; display: flex; align-items: center;
+      box-shadow: 0 1px 0 rgba(16,24,40,0.06);
+    }
+    .header .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .logo {
+      display: flex; align-items: center; gap: var(--space-3);
+      font-weight: 900; font-size: 20px; color: var(--color-text-primary);
+      letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 44px; height: 44px; border-radius: var(--radius-md);
+      background: var(--color-brand-primary); color: #fff;
+      font-weight: 900; font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark::after { content: ""; width: 10px; height: 10px; background: var(--color-brand-accent); border-radius: 50%; margin-left: -6px; }
+    .nav-main ul { list-style: none; display: flex; gap: var(--space-8); }
+    .nav-main a {
+      font-weight: 700; font-size: 15px; color: var(--color-text-primary);
+      padding: 8px 0; position: relative;
+    }
+    .nav-main a:hover { color: var(--color-brand-accent); }
+    .nav-main a.active::after {
+      content: ""; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--color-brand-accent);
+    }
+
+    /* ============================================================
+       03 — HERO (sin imagen — motion/Lottie)
+       ============================================================ */
+    .hero {
+      padding: var(--space-24) 0 var(--space-20);
+      background:
+        radial-gradient(ellipse 1000px 600px at 85% 40%, var(--color-bg-brand-tint) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 10% 80%, rgba(232,123,0,0.06) 0%, transparent 60%),
+        var(--color-bg-base);
+      position: relative; overflow: hidden;
+    }
+    .hero .container {
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: var(--space-16); align-items: center;
+      position: relative; z-index: 2;
+    }
+    .hero-content .eyebrow { margin-bottom: var(--space-5); }
+    .hero-content h1 { color: var(--color-text-primary); margin-bottom: var(--space-6); max-width: 640px; }
+    .hero-content h1 .accent { color: var(--color-brand-accent); }
+    .hero-content .body-lg { color: var(--color-text-body); max-width: 520px; margin-bottom: var(--space-8); }
+    .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+    .hero-proof {
+      display: flex; gap: var(--space-8); margin-top: var(--space-10);
+      padding-top: var(--space-6); border-top: 1px solid var(--color-border-subtle);
+    }
+    .hero-proof-item strong {
+      display: block; font-size: 28px; font-weight: 900; color: var(--color-text-primary);
+      letter-spacing: -0.01em; line-height: 1;
+    }
+    .hero-proof-item span { font-size: 13px; color: var(--color-text-secondary); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* ============================================================
+       HERO MOTION — SVG animado (placeholder de Lottie)
+       ============================================================ */
+    .hero-motion {
+      aspect-ratio: 1 / 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .hero-motion svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+    /* Núcleo UCA pulsante */
+    .motion-core {
+      transform-origin: 300px 300px;
+      animation: corePulse 4s ease-in-out infinite;
+    }
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.05); }
+    }
+
+    /* Halo alrededor del núcleo */
+    .motion-halo {
+      transform-origin: 300px 300px;
+      animation: haloPulse 4s ease-in-out infinite;
+    }
+    @keyframes haloPulse {
+      0%, 100% { opacity: .25; transform: scale(1); }
+      50%      { opacity: .05; transform: scale(1.25); }
+    }
+
+    /* Anillo exterior rotando */
+    .motion-ring {
+      transform-origin: 300px 300px;
+      animation: ringRotate 40s linear infinite;
+    }
+    @keyframes ringRotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Órbita: grupo con rotación global — cada nodo está a X distancia del centro */
+    .orbit {
+      transform-origin: 300px 300px;
+    }
+    .orbit-1 { animation: orbitCW 18s linear infinite; }
+    .orbit-2 { animation: orbitCCW 24s linear infinite; }
+    .orbit-3 { animation: orbitCW 30s linear infinite; }
+    .orbit-4 { animation: orbitCCW 22s linear infinite; }
+    .orbit-5 { animation: orbitCW 28s linear infinite; }
+    .orbit-6 { animation: orbitCCW 20s linear infinite; }
+    @keyframes orbitCW  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
+    @keyframes orbitCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg);    } }
+
+    /* Cada nodo tiene su propio pulso, independiente de la órbita */
+    .orbit-node {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: nodePulse 3s ease-in-out infinite;
+    }
+    .orbit-node.delay-1 { animation-delay: .4s; }
+    .orbit-node.delay-2 { animation-delay: .8s; }
+    .orbit-node.delay-3 { animation-delay: 1.2s; }
+    .orbit-node.delay-4 { animation-delay: 1.6s; }
+    .orbit-node.delay-5 { animation-delay: 2.0s; }
+    @keyframes nodePulse {
+      0%, 100% { opacity: 1;  transform: scale(1); }
+      50%      { opacity: .7; transform: scale(1.15); }
+    }
+
+    /* Conectores pulsantes */
+    .connector {
+      stroke: var(--color-brand-primary);
+      stroke-width: 1.2;
+      fill: none;
+      opacity: 0.18;
+      stroke-dasharray: 4 6;
+      animation: connectorDash 8s linear infinite;
+    }
+    @keyframes connectorDash {
+      to { stroke-dashoffset: -100; }
+    }
+
+    /* Partículas flotantes */
+    .particle {
+      animation: particleFloat 8s ease-in-out infinite;
+    }
+    .particle.p1 { animation-delay: 0s;    }
+    .particle.p2 { animation-delay: -1.2s; }
+    .particle.p3 { animation-delay: -2.4s; }
+    .particle.p4 { animation-delay: -3.6s; }
+    .particle.p5 { animation-delay: -4.8s; }
+    .particle.p6 { animation-delay: -6s;   }
+    @keyframes particleFloat {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      15%  { opacity: 0.8; }
+      100% { transform: translateY(-140px) translateX(20px); opacity: 0; }
+    }
+
+    /* Respeto a usuarios con preferencias de motion reducido */
+    @media (prefers-reduced-motion: reduce) {
+      .motion-core, .motion-halo, .motion-ring, .orbit, .orbit-node, .connector, .particle {
+        animation: none !important;
+      }
+    }
+
+    /* ============================================================
+       04 — SERVICIOS
+       ============================================================ */
+    .servicios { padding: var(--space-20) 0; background: var(--color-bg-alt); }
+    .servicios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .servicio-card {
+      background: #fff; border-radius: var(--radius-lg); padding: var(--space-8);
+      border-left: 3px solid var(--color-brand-accent);
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .servicio-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .servicio-icon { width: 40px; height: 40px; margin-bottom: var(--space-4); color: var(--color-brand-primary); }
+    .servicio-card h4 { margin-bottom: var(--space-2); }
+    .servicio-card p { font-size: 15px; color: var(--color-text-body); margin-bottom: var(--space-4); }
+    .servicio-card a { color: var(--color-brand-accent); font-weight: 700; font-size: 14px; }
+
+    /* ============================================================
+       05 — ACTIVIDADES DESTACADAS
+       ============================================================ */
+    .actividades { padding: var(--space-20) 0; }
+    .section-header { display: flex; justify-content: space-between; align-items: end; margin-bottom: var(--space-12); gap: var(--space-8); }
+    .section-header-text { max-width: 640px; }
+    .section-header .eyebrow { margin-bottom: var(--space-3); }
+    .actividades-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .card-actividad {
+      background: #fff; border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: var(--shadow-md);
+      display: flex; flex-direction: column;
+    }
+    .card-actividad:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--color-border-default); }
+    .card-img { aspect-ratio: 550 / 350; overflow: hidden; background: var(--color-bg-banda); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); flex: 1; }
+    .badge-fecha {
+      display: inline-block; padding: 4px 12px;
+      background: var(--color-bg-accent-tint); color: var(--color-brand-accent);
+      font-weight: 700; font-size: 13px; line-height: 1;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      border-radius: var(--radius-full); align-self: flex-start;
+    }
+    .badge-categoria {
+      display: inline-block; padding: 3px 10px;
+      background: var(--color-bg-muted); color: var(--color-text-body);
+      font-weight: 700; font-size: 12px; letter-spacing: 0.02em;
+      border-radius: var(--radius-full); align-self: flex-start;
+    }
+    .card-body h4 { margin-bottom: 0; }
+    .card-body p { font-size: 15px; color: var(--color-text-body); line-height: 1.5; flex: 1; }
+    .card-cta {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: var(--space-4); border-top: 1px solid var(--color-border-subtle);
+      margin-top: var(--space-2);
+    }
+    .card-cta a { color: var(--color-brand-accent); font-weight: 700; font-size: 14px; }
+    .card-cta a:hover { text-decoration: underline; }
+    .card-cta .caption { color: var(--color-text-secondary); }
+
+    /* ============================================================
+       06 — STATS / IMPACTO
+       ============================================================ */
+    .stats { padding: var(--space-20) 0; background: var(--color-bg-brand-tint); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); }
+    .stat { border-left: 2px solid var(--color-brand-accent); padding-left: var(--space-6); }
+    .stat-number {
+      font-size: 72px; font-weight: 900; line-height: 1;
+      letter-spacing: -0.02em; color: var(--color-text-primary);
+      margin-bottom: var(--space-2);
+    }
+    .stat-label {
+      font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--color-brand-accent);
+    }
+
+    /* ============================================================
+       07 — COWORKING EL OLIVILLO
+       ============================================================ */
+    .coworking { padding: var(--space-24) 0; }
+    .coworking .container { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: center; }
+    .coworking-visual {
+      aspect-ratio: 4 / 3; border-radius: var(--radius-xl);
+      background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80');
+      background-size: cover; background-position: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .coworking-content .eyebrow { margin-bottom: var(--space-4); }
+    .coworking-content h2 { margin-bottom: var(--space-5); max-width: 480px; }
+    .coworking-content p { color: var(--color-text-body); margin-bottom: var(--space-4); max-width: 520px; }
+    .coworking-features {
+      list-style: none; margin: var(--space-6) 0 var(--space-8);
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);
+    }
+    .coworking-features li {
+      font-size: 15px; color: var(--color-text-body);
+      padding-left: var(--space-6); position: relative;
+    }
+    .coworking-features li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--color-brand-accent); font-weight: 900;
+    }
+
+    /* ============================================================
+       08 — COLABORADORES
+       ============================================================ */
+    .colaboradores { padding: var(--space-16) 0; background: var(--color-bg-alt); border-top: 1px solid var(--color-border-subtle); }
+    .colaboradores-header { text-align: center; margin-bottom: var(--space-10); }
+    .colaboradores-header .eyebrow { display: block; margin-bottom: var(--space-2); }
+    .colaboradores-header p { color: var(--color-text-secondary); font-size: 15px; }
+    .colaboradores-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--space-8); align-items: center; }
+    .colaborador {
+      height: 48px; display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-tertiary); font-weight: 700; font-size: 14px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      filter: grayscale(1); opacity: 0.7; transition: all .2s ease;
+    }
+    .colaborador:hover { filter: grayscale(0); opacity: 1; color: var(--color-brand-primary); }
+
+    /* ============================================================
+       09 — BLOG
+       ============================================================ */
+    .blog-section { padding: var(--space-20) 0; }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .blog-card {
+      background: #fff; border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .blog-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .blog-card-body { padding: var(--space-6); }
+    .blog-card .caption { margin-bottom: var(--space-2); }
+    .blog-card h4 { margin-bottom: var(--space-3); font-size: 20px; }
+    .blog-card a { color: var(--color-text-accent); font-weight: 700; font-size: 14px; }
+
+    /* ============================================================
+       10 — FOOTER UCA (obligatorio)
+       ============================================================ */
+    .footer { background: var(--color-header-dark); color: #f0f0f0; padding: var(--space-16) 0 var(--space-10); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--space-8); margin-bottom: var(--space-12); }
+    .footer-logo { font-weight: 900; font-size: 24px; color: #fff; margin-bottom: var(--space-4); letter-spacing: -0.01em; }
+    .footer-tagline { font-size: 14px; line-height: 1.55; opacity: 0.75; max-width: 280px; }
+    .footer h4 { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-5); }
+    .footer ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); }
+    .footer ul a { font-size: 14px; opacity: 0.85; }
+    .footer ul a:hover { opacity: 1; color: var(--color-brand-accent); }
+    .footer-address { font-size: 14px; line-height: 1.6; opacity: 0.85; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: var(--space-5);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; opacity: 0.6;
+    }
+    .footer-social { display: flex; gap: var(--space-4); }
+    .footer-social a { width: 24px; height: 24px; opacity: 0.75; }
+    .footer-social a:hover { opacity: 1; color: var(--color-brand-accent); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1023px) {
+      .hero .container, .coworking .container { grid-template-columns: 1fr; gap: var(--space-10); }
+      .hero-motion { max-width: 420px; margin: 0 auto; }
+      .servicios-grid, .actividades-grid, .blog-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-8); }
+      .colaboradores-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-main { display: none; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 var(--space-4); }
+      .intranet-bar { display: none; }
+      .header { height: 64px; }
+      .hero { padding: var(--space-12) 0; }
+      .display-hero { font-size: 40px; line-height: 1.1; }
+      .h1 { font-size: 34px; }
+      .h2 { font-size: 28px; }
+      .h3 { font-size: 22px; }
+      .body-lg { font-size: 18px; }
+      .servicios, .actividades, .stats, .coworking, .blog-section { padding: var(--space-12) 0; }
+      .servicios-grid, .actividades-grid, .blog-grid { grid-template-columns: 1fr; }
+      .stat-number { font-size: 48px; }
+      .colaboradores-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: var(--space-3); text-align: center; }
+      .hero-actions .btn { width: 100%; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .hero-proof { flex-wrap: wrap; gap: var(--space-5); }
+      .hero-motion { max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 01 — INTRANET BAR UCA -->
+  <div class="intranet-bar">
+    <div class="container">
+      <ul>
+        <li><a href="#">Estudiantes</a></li>
+        <li><a href="#">Empresas</a></li>
+        <li><a href="#">Personal UCA</a></li>
+      </ul>
+      <ul>
+        <li><a href="#">BOUCA</a></li>
+        <li><a href="#">Correo</a></li>
+        <li><a href="#">Directorio</a></li>
+        <li><a href="#">CAU</a></li>
+        <li><a href="#">Campus Virtual</a></li>
+        <li><a href="#">Biblioteca</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 02 — HEADER / NAV -->
+  <header class="header">
+    <div class="container">
+      <a href="#" class="logo">
+        <span class="logo-mark">U</span>
+        <span>UCA Emprende</span>
+      </a>
+      <nav class="nav-main">
+        <ul>
+          <li><a href="#" class="active">Inicio</a></li>
+          <li><a href="actividades.html">Actividades</a></li>
+          <li><a href="#">Coworking</a></li>
+          <li><a href="#">Programas</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="btn btn-primary">Inscríbete</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       03 — HERO (SIN imagen — motion/Lottie)
+       ------------------------------------------------------------
+       Opción A (activa): animación SVG + CSS inline, 0 dependencias.
+       Opción B (comentada): lottie-player con archivo .lottie oficial
+       ============================================================ -->
+  <section class="hero">
+    <div class="container">
+
+      <div class="hero-content">
+        <span class="eyebrow">UCA Emprende · Fundación UCA</span>
+        <h1 class="display-hero">Donde las ideas se convierten en <span class="accent">empresas</span>.</h1>
+        <p class="body-lg">Desde 1981, la Universidad de Cádiz acompaña a quienes quieren emprender. Formación, mentorías, coworking El Olivillo y una red de más de 450 emprendedores y emprendedoras que empezaron como tú.</p>
+        <div class="hero-actions">
+          <a href="actividades.html" class="btn btn-primary">Ver actividades</a>
+          <a href="#" class="btn btn-ghost">Conoce El Olivillo</a>
+        </div>
+
+        <div class="hero-proof" aria-label="Impacto UCA Emprende">
+          <div class="hero-proof-item"><strong>450+</strong><span>Emprendedores UCA</span></div>
+          <div class="hero-proof-item"><strong>28</strong><span>Startups activas</span></div>
+          <div class="hero-proof-item"><strong>45</strong><span>Años de actividad</span></div>
+        </div>
+      </div>
+
+      <!-- HERO MOTION — sustituible por <lottie-player> cuando haya archivo .lottie -->
+      <div class="hero-motion" role="img" aria-label="Ecosistema UCA Emprende: red de ideas y proyectos conectados">
+
+        <!--
+          Para sustituir por Lottie oficial, habilitar lottie-player en el <head> y cambiar por:
+          <lottie-player src="path/to/uca-emprende-hero.lottie"
+                         background="transparent" speed="1" loop autoplay></lottie-player>
+        -->
+
+        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="#005877" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#003a52" stop-opacity="1"/>
+            </radialGradient>
+            <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#005877" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#005877" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#ffa04d"/>
+              <stop offset="100%" stop-color="#E87B00"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Conectores (líneas pulsantes del centro a cada nodo orbital base) -->
+          <g>
+            <line class="connector" x1="300" y1="300" x2="510" y2="300"/>
+            <line class="connector" x1="300" y1="300" x2="405" y2="118"/>
+            <line class="connector" x1="300" y1="300" x2="195" y2="118"/>
+            <line class="connector" x1="300" y1="300" x2="90"  y2="300"/>
+            <line class="connector" x1="300" y1="300" x2="195" y2="482"/>
+            <line class="connector" x1="300" y1="300" x2="405" y2="482"/>
+          </g>
+
+          <!-- Anillo exterior rotando -->
+          <g class="motion-ring">
+            <circle cx="300" cy="300" r="260" fill="none" stroke="#005877" stroke-width="1" stroke-opacity="0.12" stroke-dasharray="2 10"/>
+            <circle cx="300" cy="300" r="230" fill="none" stroke="#005877" stroke-width="1" stroke-opacity="0.08"/>
+          </g>
+
+          <!-- Halo núcleo -->
+          <circle class="motion-halo" cx="300" cy="300" r="110" fill="url(#haloGrad)"/>
+
+          <!-- Núcleo UCA -->
+          <g class="motion-core">
+            <circle cx="300" cy="300" r="70" fill="url(#coreGrad)"/>
+            <circle cx="300" cy="300" r="70" fill="none" stroke="#E87B00" stroke-width="2" stroke-opacity="0.6"/>
+            <text x="300" y="308" text-anchor="middle" fill="#ffffff"
+                  font-family="Lato, sans-serif" font-weight="900" font-size="26"
+                  letter-spacing="1">UCA</text>
+          </g>
+
+          <!-- Órbitas con nodos naranjas (cada grupo gira; el nodo pulsa dentro) -->
+          <g class="orbit orbit-1">
+            <g class="orbit-node delay-1">
+              <circle cx="510" cy="300" r="16" fill="url(#accentGrad)"/>
+              <circle cx="510" cy="300" r="16" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+          <g class="orbit orbit-2">
+            <g class="orbit-node delay-2">
+              <circle cx="405" cy="118" r="12" fill="url(#accentGrad)"/>
+              <circle cx="405" cy="118" r="12" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+          <g class="orbit orbit-3">
+            <g class="orbit-node delay-3">
+              <circle cx="195" cy="118" r="14" fill="url(#accentGrad)"/>
+              <circle cx="195" cy="118" r="14" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+          <g class="orbit orbit-4">
+            <g class="orbit-node delay-4">
+              <circle cx="90" cy="300" r="10" fill="url(#accentGrad)"/>
+              <circle cx="90" cy="300" r="10" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+          <g class="orbit orbit-5">
+            <g class="orbit-node delay-5">
+              <circle cx="195" cy="482" r="13" fill="url(#accentGrad)"/>
+              <circle cx="195" cy="482" r="13" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+          <g class="orbit orbit-6">
+            <g class="orbit-node">
+              <circle cx="405" cy="482" r="15" fill="url(#accentGrad)"/>
+              <circle cx="405" cy="482" r="15" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.9"/>
+            </g>
+          </g>
+
+          <!-- Micropartículas flotantes -->
+          <g>
+            <circle class="particle p1" cx="140" cy="460" r="3" fill="#E87B00" opacity="0.7"/>
+            <circle class="particle p2" cx="470" cy="450" r="2.5" fill="#005877" opacity="0.6"/>
+            <circle class="particle p3" cx="220" cy="520" r="2" fill="#E87B00" opacity="0.7"/>
+            <circle class="particle p4" cx="380" cy="510" r="3.5" fill="#005877" opacity="0.5"/>
+            <circle class="particle p5" cx="100" cy="380" r="2" fill="#E87B00" opacity="0.8"/>
+            <circle class="particle p6" cx="500" cy="390" r="2.5" fill="#005877" opacity="0.6"/>
+          </g>
+
+          <!-- Etiquetas flotantes orientativas (opcionales) -->
+          <g font-family="Lato, sans-serif" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#6B6E6D" text-anchor="middle">
+            <text x="300" y="60" opacity="0.6">IDEA</text>
+            <text x="300" y="555" opacity="0.6">EMPRESA</text>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 04 — SERVICIOS -->
+  <section class="servicios">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-header-text">
+          <span class="eyebrow">Qué ofrecemos</span>
+          <h2 class="h2">Acompañamos cada fase del emprendimiento</h2>
+        </div>
+      </div>
+      <div class="servicios-grid">
+        <article class="servicio-card">
+          <svg class="servicio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <h4 class="h4">Formación</h4>
+          <p>Talleres y programas que te dan las herramientas para transformar una idea en un modelo de negocio viable.</p>
+          <a href="#">Ver calendario →</a>
+        </article>
+        <article class="servicio-card">
+          <svg class="servicio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <h4 class="h4">Mentoría</h4>
+          <p>Mentores senior, perfiles técnicos y emprendedores UCA que te orientan en lo estratégico y lo práctico.</p>
+          <a href="#">Solicitar mentoría →</a>
+        </article>
+        <article class="servicio-card">
+          <svg class="servicio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          <h4 class="h4">Coworking El Olivillo</h4>
+          <p>Un espacio físico en Cádiz para trabajar en tu proyecto, conectar con otras startups y crecer en comunidad.</p>
+          <a href="#">Reserva tu sitio →</a>
+        </article>
+        <article class="servicio-card">
+          <svg class="servicio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <h4 class="h4">Convocatorias</h4>
+          <p>Premios, concursos y ayudas económicas a proyectos universitarios. Plazos abiertos durante todo el año.</p>
+          <a href="#">Ver convocatorias →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — ACTIVIDADES DESTACADAS -->
+  <section class="actividades">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-header-text">
+          <span class="eyebrow">Próximas actividades</span>
+          <h2 class="h2">Empieza por aquí</h2>
+          <p>Formación abierta a estudiantes, egresados, personal UCA y personas vinculadas al ecosistema emprendedor de Cádiz.</p>
+        </div>
+        <a href="actividades.html" class="btn btn-ghost">Ver todas →</a>
+      </div>
+      <div class="actividades-grid">
+        <article class="card-actividad">
+          <div class="card-img"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80" alt="Taller de validación de idea"></div>
+          <div class="card-body">
+            <span class="badge-fecha">5 MAYO · 17:00</span>
+            <span class="badge-categoria">Taller</span>
+            <h4 class="h4">Validación temprana: cómo saber si tu idea tiene mercado</h4>
+            <p>Una tarde práctica con Elena Casado, fundadora de Mareo Lab, para aprender a hablar con clientes antes de construir nada.</p>
+            <div class="card-cta"><a href="#">Inscribirme →</a><span class="caption">El Olivillo · 3h</span></div>
+          </div>
+        </article>
+        <article class="card-actividad">
+          <div class="card-img"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80" alt="Programa StartUCA"></div>
+          <div class="card-body">
+            <span class="badge-fecha">12 MAYO · 10:00</span>
+            <span class="badge-categoria">Programa</span>
+            <h4 class="h4">StartUCA 2026: convocatoria abierta hasta el 31 de mayo</h4>
+            <p>Seis meses de acompañamiento intensivo, tres mentorías al mes y hasta 3.000 € para equipos universitarios.</p>
+            <div class="card-cta"><a href="#">Ver bases →</a><span class="caption">Programa · 6 meses</span></div>
+          </div>
+        </article>
+        <article class="card-actividad">
+          <div class="card-img"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Mentoring day"></div>
+          <div class="card-body">
+            <span class="badge-fecha">18 MAYO · 16:30</span>
+            <span class="badge-categoria">Mentoring day</span>
+            <h4 class="h4">Mentoring Day: reserva 45 minutos con un mentor</h4>
+            <p>Encuentro uno-a-uno con mentores del ecosistema: finanzas, producto, legal, marketing y ventas B2B.</p>
+            <div class="card-cta"><a href="#">Reservar slot →</a><span class="caption">Presencial · 45 min</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — STATS -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-number">450+</div><div class="stat-label">Estudiantes formados</div></div>
+        <div class="stat"><div class="stat-number">28</div><div class="stat-label">Startups activas</div></div>
+        <div class="stat"><div class="stat-number">45</div><div class="stat-label">Años de actividad</div></div>
+        <div class="stat"><div class="stat-number">12</div><div class="stat-label">Mentores del ecosistema</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — COWORKING -->
+  <section class="coworking">
+    <div class="container">
+      <div class="coworking-visual" role="img" aria-label="Interior del coworking El Olivillo"></div>
+      <div class="coworking-content">
+        <span class="eyebrow">Coworking El Olivillo</span>
+        <h2 class="h2">Un espacio donde tu proyecto no está solo.</h2>
+        <p>En pleno casco histórico de Cádiz, El Olivillo es el espacio de coworking de la Universidad para startups, emprendedores y equipos en fase temprana. 25 puestos, 2 salas de reuniones, zona de eventos y una comunidad activa de más de 50 proyectos anuales.</p>
+        <ul class="coworking-features">
+          <li>Puestos fijos y flex</li>
+          <li>Salas de reuniones</li>
+          <li>Acceso 24/7</li>
+          <li>Eventos de comunidad</li>
+        </ul>
+        <a href="#" class="btn btn-secondary">Visita El Olivillo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 — COLABORADORES -->
+  <section class="colaboradores">
+    <div class="container">
+      <div class="colaboradores-header">
+        <span class="eyebrow">Con el apoyo de</span>
+        <p>Entidades que hacen posible el ecosistema UCA Emprende</p>
+      </div>
+      <div class="colaboradores-grid">
+        <div class="colaborador">Santander</div>
+        <div class="colaborador">Cámara Cádiz</div>
+        <div class="colaborador">Junta Andalucía</div>
+        <div class="colaborador">Fundación UCA</div>
+        <div class="colaborador">Enisa</div>
+        <div class="colaborador">Zona Franca</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 — BLOG -->
+  <section class="blog-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-header-text">
+          <span class="eyebrow">Blog</span>
+          <h2 class="h2">Lo último que hemos publicado</h2>
+        </div>
+        <a href="#" class="btn btn-ghost">Ir al blog →</a>
+      </div>
+      <div class="blog-grid">
+        <article class="blog-card">
+          <div class="blog-card-body">
+            <span class="caption">14 abril 2026 · Casos de éxito</span>
+            <h4>De Máster UCA a Seed Round: la historia de Alva Biotech</h4>
+            <a href="#">Leer artículo →</a>
+          </div>
+        </article>
+        <article class="blog-card">
+          <div class="blog-card-body">
+            <span class="caption">7 abril 2026 · Guías</span>
+            <h4>Cinco errores típicos cuando validas tu primera idea</h4>
+            <a href="#">Leer artículo →</a>
+          </div>
+        </article>
+        <article class="blog-card">
+          <div class="blog-card-body">
+            <span class="caption">1 abril 2026 · Ecosistema</span>
+            <h4>Qué pasó en el Demo Day 2026: cinco proyectos que sorprendieron</h4>
+            <a href="#">Leer artículo →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — FOOTER UCA -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">Universidad de Cádiz</div>
+          <p class="footer-tagline">UCA Emprende es un proyecto de la Fundación Universidad de Cádiz — Cátedra de Emprendedores.</p>
+        </div>
+        <div>
+          <h4>Secciones</h4>
+          <ul>
+            <li><a href="actividades.html">Actividades</a></li>
+            <li><a href="#">Coworking</a></li>
+            <li><a href="#">Programas</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <p class="footer-address">
+            Coworking El Olivillo<br>
+            C/ Benito Pérez Galdós, s/n<br>
+            11002 Cádiz<br>
+            956 015 885<br>
+            emprende@uca.es
+          </p>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Aviso legal</a></li>
+            <li><a href="#">Política de privacidad</a></li>
+            <li><a href="#">Accesibilidad</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Universidad de Cádiz · Todos los derechos reservados</span>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Twitter">tw</a>
+          <a href="#" aria-label="Instagram">ig</a>
+          <a href="#" aria-label="YouTube">yt</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
