@@ -1,174 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="robots" content="noindex, nofollow" />
-<title>UCA Emprende · Preview de diseño</title>
-<style>
-  :root {
-    --bg: #0F1923;
-    --panel: #142231;
-    --border: #233448;
-    --text: #F5F7FA;
-    --muted: #9DB0C6;
-    --accent: #FFC107;
-    --accent-2: #00BCD4;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    line-height: 1.5;
-  }
-  main {
-    flex: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 64px 24px;
-    width: 100%;
-  }
-  header.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 48px;
-  }
-  .brand-mark {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-  }
-  .brand-text { font-weight: 600; letter-spacing: 0.02em; }
-  .brand-sub { color: var(--muted); font-size: 13px; }
-  h1 {
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.15;
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
-  }
-  .lead {
-    color: var(--muted);
-    max-width: 640px;
-    font-size: 16px;
-    margin: 0 0 40px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  @media (min-width: 720px) {
-    .grid { grid-template-columns: 1fr 1fr; }
-  }
-  .card {
-    display: block;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
-    color: var(--text);
-    text-decoration: none;
-    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-    background: #182a3c;
-  }
-  .card-tag {
-    display: inline-block;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    background: rgba(255, 193, 7, 0.1);
-    padding: 4px 10px;
-    border-radius: 999px;
-    margin-bottom: 14px;
-  }
-  .card h2 {
-    margin: 0 0 6px;
-    font-size: 20px;
-    letter-spacing: -0.005em;
-  }
-  .card p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 14px;
-  }
-  .card-arrow {
-    margin-top: 18px;
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-  }
-  footer strong { color: var(--text); font-weight: 600; }
-  .meta {
-    margin-top: 56px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-  .meta b { color: var(--text); font-weight: 600; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>UCA Emprende — Nueva Home</title>
+  <link rel="stylesheet" href="colors_and_type.css">
+  <style>
+    html, body { margin: 0; padding: 0; background: var(--color-bg-base); color: var(--color-text-body); }
+    * { box-sizing: border-box; }
+    a { color: inherit; }
+    strong { font-weight: 700; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
 <body>
-  <main>
-    <header class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
-      <div>
-        <div class="brand-text">UCA Emprende · Preview</div>
-        <div class="brand-sub">Diseño por mowomo</div>
-      </div>
-    </header>
+  <div id="root"></div>
 
-    <h1>Preview de diseño · UCA Emprende</h1>
-    <p class="lead">
-      Esta es una vista previa privada del diseño propuesto para la web de UCA Emprende.
-      Selecciona una pantalla para revisarla. Las maquetas son responsive y reflejan
-      la identidad visual y la jerarquía propuesta para producción.
-    </p>
+  <script type="text/babel" src="src/Primitives.jsx"></script>
+  <script type="text/babel" src="src/Layout.jsx"></script>
+  <script type="text/babel" src="src/Cards.jsx"></script>
+  <script type="text/babel" src="src/HeroAnimationCompact.jsx"></script>
+  <script type="text/babel" src="src/HeroEditorial.jsx"></script>
+  <script type="text/babel" src="src/FlagshipAndActivities.jsx"></script>
+  <script type="text/babel" src="src/ServicesAndOlivillo.jsx"></script>
+  <script type="text/babel" src="src/StoriesAndNewsletter.jsx"></script>
+  <script type="text/babel" src="src/NuevaHome.jsx"></script>
+  <script type="text/babel" src="src/TweaksPanel.jsx"></script>
 
-    <div class="grid">
-      <a class="card" href="home-v2.html">
-        <span class="card-tag">Home · v2</span>
-        <h2>Página de inicio</h2>
-        <p>Versión actualizada del home con hero, programas, indicadores de impacto, casos y CTA.</p>
-        <div class="card-arrow">Abrir maqueta →</div>
-      </a>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-      <a class="card" href="actividades.html">
-        <span class="card-tag">Actividades · v1</span>
-        <h2>Listado de actividades</h2>
-        <p>Plantilla de listado con filtros, tarjetas de actividad y detalle visual.</p>
-        <div class="card-arrow">Abrir maqueta →</div>
-      </a>
-    </div>
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "accentIntensity": "normal",
+      "showFlagship": false,
+      "showStories": true,
+      "density": "airy"
+    }/*EDITMODE-END*/;
 
-    <div class="meta">
-      <span><b>Cliente:</b> Universidad de Cádiz · UCA Emprende</span>
-      <span><b>Estado:</b> Preview interna</span>
-      <span><b>Acceso:</b> Solo con enlace</span>
-    </div>
-  </main>
+    function App() {
+      const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+      const [editMode, setEditMode] = useState(false);
 
-  <footer>
-    <strong>mowomo</strong> · Estudio de producto digital · Esta preview no es un sitio en producción.
-  </footer>
+      useEffect(() => {
+        const handler = (e) => {
+          if (!e.data || typeof e.data !== "object") return;
+          if (e.data.type === "__activate_edit_mode") setEditMode(true);
+          if (e.data.type === "__deactivate_edit_mode") setEditMode(false);
+        };
+        window.addEventListener("message", handler);
+        try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch (err) {}
+        return () => window.removeEventListener("message", handler);
+      }, []);
+
+      const navigate = (page) => {
+        // Por ahora sólo la home; navegación expone los IDs esperados por el layout
+        if (page === "actividades") {
+          window.scrollTo({ top: document.querySelector('[data-section="activities"]')?.offsetTop || 0, behavior: "smooth" });
+        }
+      };
+
+      return (
+        <div>
+          <IntranetBar />
+          <Header current="inicio" onNavigate={navigate} />
+          <div data-screen-label="01 Home">
+            <NuevaHome tweaks={tweaks} onNavigate={navigate} />
+          </div>
+          <Footer />
+          <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={editMode} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
 </body>
 </html>
