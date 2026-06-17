@@ -15,7 +15,8 @@ const NuevaHome = ({ tweaks, onNavigate }) => {
       <OlivilloHero />
       {/* Bloque 4 — referentes / casos de éxito (se conserva) */}
       {tweaks.showStories && <SuccessStories />}
-      <NewsletterBand />
+      {/* La captación de boletín vive ahora en el footer (feedback #17); se retira la banda
+          duplicada que había aquí para no pedir el email dos veces en la misma página. */}
     </div>
   );
 };
