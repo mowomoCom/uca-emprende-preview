@@ -256,17 +256,18 @@ const ActTimelineRow = ({ activity }) => {
     <article
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
       style={{
-        display: "grid", gridTemplateColumns: "120px 1fr auto", gap: 36, alignItems: "center",
-        padding: "28px 20px", borderTop: "1px solid var(--color-border-subtle)",
+        display: "grid", gridTemplateColumns: "88px 96px 1fr auto", gap: 24, alignItems: "center",
+        padding: "24px 20px", borderTop: "1px solid var(--color-border-subtle)",
         background: hover ? "#fff" : "transparent",
         borderRadius: hover ? "var(--radius-lg)" : 0,
         boxShadow: hover ? "var(--shadow-lg)" : "none",
         transition: "all var(--duration-medium) var(--ease-out)", cursor: "pointer",
       }}
     >
+      <ActivityThumb image={activity.image} category={category} title={title} featured={featured} size={88} />
       <div>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 4 }}>{dow}</div>
-        <div style={{ fontSize: 56, fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.04em", color: hover ? "var(--color-brand-accent)" : "var(--color-brand-primary)", transition: "color var(--duration-medium)" }}>{day}</div>
+        <div style={{ fontSize: 52, fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.04em", color: hover ? "var(--color-brand-accent)" : "var(--color-brand-primary)", transition: "color var(--duration-medium)" }}>{day}</div>
         <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: "0.1em", color: "var(--color-text-primary)", marginTop: 2 }}>{time}</div>
       </div>
       <div style={{ maxWidth: 680 }}>

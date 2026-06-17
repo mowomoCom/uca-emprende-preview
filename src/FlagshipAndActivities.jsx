@@ -198,10 +198,10 @@ const TimelineRow = ({ activity }) => {
       onMouseLeave={() => setHover(false)}
       style={{
         display: "grid",
-        gridTemplateColumns: "140px 1fr auto",
-        gap: 40,
+        gridTemplateColumns: "104px 110px 1fr auto",
+        gap: 28,
         alignItems: "center",
-        padding: "32px 24px",
+        padding: "24px 24px",
         borderTop: "1px solid var(--color-border-subtle)",
         background: hover ? "#fff" : "transparent",
         borderRadius: hover ? "var(--radius-lg)" : 0,
@@ -211,13 +211,16 @@ const TimelineRow = ({ activity }) => {
         position: "relative",
       }}
     >
+      {/* Imagen cuadrada de la actividad */}
+      <ActivityThumb image={activity.image} category={category} title={title} featured={featured} size={104} />
+
       {/* Columna fecha */}
       <div style={{ textAlign: "left" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 4 }}>
           {dow}
         </div>
         <div style={{
-          fontSize: 64, fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.04em",
+          fontSize: 56, fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.04em",
           color: hover ? "var(--color-brand-accent)" : "var(--color-brand-primary)",
           transition: "color var(--duration-medium) var(--ease-out)",
         }}>

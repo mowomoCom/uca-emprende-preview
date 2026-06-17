@@ -189,4 +189,47 @@ const Logo = ({ variant = "emprende", height = 40 }) => {
   return <img src="assets/logo-uca-emprende.png" alt="UCA Emprende" style={{ height, width: "auto", display: "block" }} />;
 };
 
-Object.assign(window, { Icon, Button, Badge, Chip, Logo, Eyebrow });
+/* ---------- ActivityThumb (imagen cuadrada de la actividad) ----------
+   Feedback cliente 16/06: las tarjetas de actividad necesitan una imagen en
+   proporción FIJA (cuadrada). Si la actividad trae `image`, se muestra la foto;
+   si no, un placeholder coherente por categoría (PENDIENTE: fotos reales del cliente). */
+const ACTIVITY_ICONS = {
+  Taller: "lightbulb",
+  Webinar: "play",
+  Evento: "sparkles",
+  Networking: "users",
+  Mentoring: "award",
+  Bootcamp: "target",
+  Programa: "graduationCap",
+};
+const ActivityThumb = ({ image, category = "", title = "", featured = false, size = 96 }) => {
+  const iconName = ACTIVITY_ICONS[category] || "calendar";
+  const tint = featured ? "var(--color-bg-accent-tint)" : "var(--color-bg-brand-tint)";
+  const fg = featured ? "var(--color-brand-accent)" : "var(--color-brand-primary)";
+  return (
+    <div style={{
+      width: size, height: size, flexShrink: 0,
+      borderRadius: "var(--radius-md)", overflow: "hidden", position: "relative",
+      background: tint, border: "1px solid var(--color-border-subtle)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+    }}>
+      {image ? (
+        <img src={image} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      ) : (
+        <>
+          <svg aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.6 }}>
+            <pattern id={`thumb-dots-${featured ? "a" : "p"}`} width="13" height="13" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.1" fill={fg} opacity="0.16" />
+            </pattern>
+            <rect width="100%" height="100%" fill={`url(#thumb-dots-${featured ? "a" : "p"})`} />
+          </svg>
+          <span style={{ color: fg, position: "relative", opacity: 0.85 }}>
+            <Icon name={iconName} size={Math.round(size * 0.34)} strokeWidth={1.75} />
+          </span>
+        </>
+      )}
+    </div>
+  );
+};
+
+Object.assign(window, { Icon, Button, Badge, Chip, Logo, Eyebrow, ActivityThumb });
