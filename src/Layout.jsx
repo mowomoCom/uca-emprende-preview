@@ -102,15 +102,36 @@ const Header = ({ current = "inicio", onNavigate }) => {
   );
 };
 
+const FooterNewsletter = () => {
+  const [email, setEmail] = React.useState("");
+  const [sent, setSent] = React.useState(false);
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", paddingBottom: 40, marginBottom: 40, borderBottom: "1px solid rgba(255,255,255,0.1)", flexWrap: "wrap" }}>
+      <div>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-brand-accent)", marginBottom: 8 }}>Boletín UCA Emprende</div>
+        <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.01em" }}>Recibe convocatorias y actividades, una vez al mes.</div>
+      </div>
+      {sent ? (
+        <div style={{ color: "var(--color-brand-accent)", fontWeight: 700, fontSize: 15 }}>✓ Suscripción recibida. Gracias.</div>
+      ) : (
+        <form onSubmit={(e) => { e.preventDefault(); if (email.includes("@")) setSent(true); }} style={{ display: "flex", gap: 8, minWidth: 320 }}>
+          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu.nombre@uca.es"
+            style={{ flex: 1, fontFamily: "var(--font-family-primary)", fontSize: 15, padding: "12px 16px", background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "var(--radius-md)", outline: "none" }} />
+          <Button type="submit" variant="primary">Suscribirme</Button>
+        </form>
+      )}
+    </div>
+  );
+};
+
 const Footer = () => {
+  // Feedback cliente 16/06: el footer recoge el boletín + la información institucional y
+  // secundaria (memorias, personal, requisición de cuentas, enlaces no principales).
+  // El "Sobre UCA Emprende / quiénes somos" se ha movido al menú principal (no va aquí).
   const columns = [
     {
-      title: "Emprende",
-      links: ["Actividades", "Programas", "Coworking El Olivillo", "Blog", "Casos de éxito"],
-    },
-    {
-      title: "Servicios",
-      links: ["Asesoramiento", "Formación", "Mentoring", "Financiación", "Internacionalización"],
+      title: "Institucional",
+      links: ["Memorias anuales", "Personal y equipo", "Transparencia", "Requisición de cuentas", "Normativa"],
     },
     {
       title: "Universidad",
@@ -122,9 +143,12 @@ const Footer = () => {
     },
   ];
   return (
-    <footer style={{ background: "var(--color-bg-dark)", color: "#e6eaec", paddingTop: 64, marginTop: 0 }}>
+    <footer style={{ background: "var(--color-bg-dark)", color: "#e6eaec", paddingTop: 56, marginTop: 0 }}>
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr 1fr 1fr", gap: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+        {/* Boletín — captación secundaria en el propio footer */}
+        <FooterNewsletter />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
           <div>
             <div style={{ marginBottom: 20, filter: "brightness(0) invert(1)" }}>
               <Logo variant="uca" height={56} />

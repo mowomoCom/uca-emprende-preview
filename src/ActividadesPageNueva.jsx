@@ -1,10 +1,27 @@
 // Actividades — nueva versión editorial
 // Hero con buscador integrado · vista calendario/lista · timeline agrupado por mes · convocatorias destacadas
 
+/* --- utilidades de fecha (filtro por fecha destacado + vista calendario) --- */
+const MONTHS_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const parseMonthLabel = (label) => {
+  const parts = String(label).toLowerCase().split(" ");
+  return { monthIndex: MONTHS_ES.indexOf(parts[0]), year: parseInt(parts[1], 10) };
+};
+const firstWeekdayMon0 = (label) => {
+  const { monthIndex, year } = parseMonthLabel(label);
+  return (new Date(year, monthIndex, 1).getDay() + 6) % 7; // lunes = 0
+};
+const daysInMonth = (label) => {
+  const { monthIndex, year } = parseMonthLabel(label);
+  return new Date(year, monthIndex + 1, 0).getDate();
+};
+
 const ActividadesPageNueva = () => {
   const [view, setView] = React.useState("lista"); // lista | calendario
-  const [activeFilters, setActiveFilters] = React.useState(["Mayo 2026", "Estudiantes UCA"]);
   const [search, setSearch] = React.useState("");
+  const [activeCat, setActiveCat] = React.useState("Todas");
+  const [dateFilter, setDateFilter] = React.useState({ month: "all", day: null });
+  const [dateOpen, setDateOpen] = React.useState(false);
 
   const months = [
     {
@@ -35,9 +52,31 @@ const ActividadesPageNueva = () => {
   ];
 
   const categories = ["Todas", "Taller", "Webinar", "Evento", "Networking", "Mentoring", "Bootcamp", "Programa"];
-  const [activeCat, setActiveCat] = React.useState("Todas");
 
-  const totalCount = months.reduce((n, m) => n + m.activities.length, 0);
+  // --- Filtrado real (buscador + categoría + fecha) ---
+  const q = search.trim().toLowerCase();
+  const matchesActivity = (a, monthLabel) => {
+    if (activeCat !== "Todas" && a.category !== activeCat) return false;
+    if (dateFilter.month !== "all" && monthLabel !== dateFilter.month) return false;
+    if (dateFilter.day && a.day !== dateFilter.day) return false;
+    if (q && !`${a.title} ${a.desc} ${a.category} ${a.location}`.toLowerCase().includes(q)) return false;
+    return true;
+  };
+  const filteredMonths = months
+    .map((m) => ({ ...m, activities: m.activities.filter((a) => matchesActivity(a, m.label)) }))
+    .filter((m) => m.activities.length > 0);
+  const totalCount = filteredMonths.reduce((n, m) => n + m.activities.length, 0);
+
+  // Mes que se pinta en la vista calendario: el del filtro de fecha, o el primero disponible
+  const calendarMonthLabel = dateFilter.month !== "all" ? dateFilter.month : months[0].label;
+  const calendarMonth = months.find((m) => m.label === calendarMonthLabel) || months[0];
+
+  // Chips de filtros aplicados (derivados del estado)
+  const clearAll = () => { setDateFilter({ month: "all", day: null }); setActiveCat("Todas"); setSearch(""); };
+  const applied = [];
+  if (dateFilter.month !== "all") applied.push({ key: "date", label: dateFilter.day ? `${dateFilter.day} · ${dateFilter.month}` : dateFilter.month, clear: () => setDateFilter({ month: "all", day: null }) });
+  if (activeCat !== "Todas") applied.push({ key: "cat", label: activeCat, clear: () => setActiveCat("Todas") });
+  if (q) applied.push({ key: "search", label: `"${search.trim()}"`, clear: () => setSearch("") });
 
   return (
     <div data-screen-label="02 Actividades">
@@ -89,7 +128,7 @@ const ActividadesPageNueva = () => {
               <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap", fontSize: 13, color: "var(--color-text-secondary)" }}>
                 <span style={{ fontWeight: 700 }}>Sugerencias:</span>
                 {["Premio Atrévete", "El Olivillo", "Demo Day"].map((t) => (
-                  <a key={t} href="#" style={{ color: "var(--color-brand-primary)", textDecoration: "underline", fontWeight: 700 }}>{t}</a>
+                  <a key={t} href="#" onClick={(e) => { e.preventDefault(); setSearch(t); }} style={{ color: "var(--color-brand-primary)", textDecoration: "underline", fontWeight: 700 }}>{t}</a>
                 ))}
               </div>
             </div>
@@ -110,28 +149,33 @@ const ActividadesPageNueva = () => {
         </div>
       </section>
 
-      {/* STICKY FILTERS */}
+      {/* STICKY FILTERS — FECHA como filtro destacado, categoría secundaria */}
       <div style={{ position: "sticky", top: 80, zIndex: 40, background: "rgba(255,255,255,0.96)", backdropFilter: "saturate(140%) blur(8px)", WebkitBackdropFilter: "saturate(140%) blur(8px)", boxShadow: "var(--shadow-sticky)", borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)" }}>
-        <div className="container" style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <div style={{ color: "var(--color-text-secondary)", display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              <Icon name="filter" size={15} /> Categoría
+        <div className="container" style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
+            {/* Filtro destacado: FECHA */}
+            <DateFilter months={months} value={dateFilter} onChange={setDateFilter} open={dateOpen} setOpen={setDateOpen} />
+
+            {/* Filtro secundario: categoría */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: "var(--color-text-tertiary)", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Categoría</span>
+              <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+                {categories.map((c) => (
+                  <button key={c} onClick={() => setActiveCat(c)}
+                    style={{
+                      padding: "5px 11px", borderRadius: "var(--radius-full)", border: "1px solid var(--color-border-subtle)",
+                      background: activeCat === c ? "var(--color-bg-brand-tint)" : "transparent",
+                      color: activeCat === c ? "var(--color-brand-primary)" : "var(--color-text-secondary)",
+                      fontFamily: "var(--font-family-primary)", fontSize: 12, fontWeight: 700, cursor: "pointer",
+                      transition: "all var(--duration-fast) var(--ease-out)",
+                    }}
+                  >{c}</button>
+                ))}
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {categories.map((c) => (
-                <button key={c} onClick={() => setActiveCat(c)}
-                  style={{
-                    padding: "7px 14px", borderRadius: "var(--radius-full)", border: "none",
-                    background: activeCat === c ? "var(--color-brand-primary)" : "var(--color-bg-muted)",
-                    color: activeCat === c ? "#fff" : "var(--color-text-body)",
-                    fontFamily: "var(--font-family-primary)", fontSize: 13, fontWeight: 700, cursor: "pointer",
-                    transition: "all var(--duration-fast) var(--ease-out)",
-                  }}
-                >{c}</button>
-              ))}
-            </div>
+
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 14 }}>
-              <span style={{ color: "var(--color-text-secondary)", fontSize: 13, fontWeight: 700 }}>{totalCount} resultados</span>
+              <span style={{ color: "var(--color-text-secondary)", fontSize: 13, fontWeight: 700 }}>{totalCount} {totalCount === 1 ? "resultado" : "resultados"}</span>
               <div style={{ display: "inline-flex", border: "1px solid var(--color-border-default)", borderRadius: "var(--radius-md)", overflow: "hidden" }}>
                 {[
                   { id: "lista", label: "Lista" },
@@ -149,13 +193,13 @@ const ActividadesPageNueva = () => {
               </div>
             </div>
           </div>
-          {activeFilters.length > 0 && (
+          {applied.length > 0 && (
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <span style={{ color: "var(--color-text-secondary)", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Aplicados</span>
-              {activeFilters.map((c) => (
-                <Chip key={c} active onRemove={() => setActiveFilters(activeFilters.filter((x) => x !== c))}>{c}</Chip>
+              {applied.map((f) => (
+                <Chip key={f.key} active onRemove={f.clear}>{f.label}</Chip>
               ))}
-              <button onClick={() => setActiveFilters([])} style={{ background: "none", border: "none", color: "var(--color-brand-primary)", fontSize: 12, fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}>Limpiar</button>
+              <button onClick={clearAll} style={{ background: "none", border: "none", color: "var(--color-brand-primary)", fontSize: 12, fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}>Limpiar</button>
             </div>
           )}
         </div>
@@ -165,14 +209,22 @@ const ActividadesPageNueva = () => {
       {view === "lista" ? (
         <section style={{ paddingTop: 56, paddingBottom: 96 }}>
           <div className="container">
-            {months.map((m) => <MonthBlock key={m.label} month={m} />)}
-            <div style={{ display: "flex", justifyContent: "center", marginTop: 56 }}>
-              <Button variant="outline" iconRight="arrowRight">Cargar siguientes meses</Button>
-            </div>
+            {filteredMonths.length > 0 ? (
+              <>
+                {filteredMonths.map((m) => <MonthBlock key={m.label} month={m} />)}
+                {applied.length === 0 && (
+                  <div style={{ display: "flex", justifyContent: "center", marginTop: 56 }}>
+                    <Button variant="outline" iconRight="arrowRight">Cargar siguientes meses</Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <EmptyState onClear={clearAll} />
+            )}
           </div>
         </section>
       ) : (
-        <CalendarView months={months} />
+        <CalendarView month={calendarMonth} activeCat={activeCat} search={q} />
       )}
 
       {/* SUGGESTION BAND */}
@@ -291,16 +343,19 @@ const ActTimelineRow = ({ activity }) => {
   );
 };
 
-/* --- Calendar grid view --- */
-const CalendarView = ({ months }) => {
-  const m = months[0]; // Mayo 2026
-  const startDow = 4; // 1 mayo = viernes (col 4 si la semana empieza en lunes)
+/* --- Calendar grid view (mes activo, con filtros aplicados) --- */
+const CalendarView = ({ month, activeCat = "Todas", search = "" }) => {
+  const startDow = firstWeekdayMon0(month.label);
+  const total = daysInMonth(month.label);
+  const matches = (a) =>
+    (activeCat === "Todas" || a.category === activeCat) &&
+    (!search || `${a.title} ${a.desc} ${a.category} ${a.location}`.toLowerCase().includes(search));
+
   const cells = [];
   for (let i = 0; i < startDow; i++) cells.push(null);
-  for (let d = 1; d <= 31; d++) {
+  for (let d = 1; d <= total; d++) {
     const dd = String(d).padStart(2, "0");
-    const acts = m.activities.filter((a) => a.day === dd);
-    cells.push({ day: dd, acts });
+    cells.push({ day: dd, acts: month.activities.filter((a) => a.day === dd && matches(a)) });
   }
   while (cells.length % 7 !== 0) cells.push(null);
 
@@ -308,30 +363,140 @@ const CalendarView = ({ months }) => {
     <section style={{ paddingTop: 56, paddingBottom: 96 }}>
       <div className="container">
         <h2 style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-0.02em", color: "var(--color-text-primary)", margin: "0 0 24px", textTransform: "uppercase" }}>
-          {m.label}
+          {month.label}
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 1, background: "var(--color-border-subtle)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-          {["L", "M", "X", "J", "V", "S", "D"].map((d) => (
-            <div key={d} style={{ background: "var(--color-bg-alt)", padding: "12px 14px", fontSize: 11, fontWeight: 900, letterSpacing: "0.12em", color: "var(--color-text-secondary)", textTransform: "uppercase" }}>{d}</div>
+          {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((d) => (
+            <div key={d} style={{ background: "var(--color-bg-alt)", padding: "12px 14px", fontSize: 11, fontWeight: 900, letterSpacing: "0.1em", color: "var(--color-text-secondary)", textTransform: "uppercase" }}>{d}</div>
           ))}
-          {cells.map((c, i) => (
-            <div key={i} style={{ background: "#fff", minHeight: 110, padding: 10, position: "relative", display: "flex", flexDirection: "column", gap: 4 }}>
-              {c && (
-                <>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: c.acts.length ? "var(--color-brand-primary)" : "var(--color-text-secondary)" }}>{c.day}</div>
-                  {c.acts.map((a, j) => (
-                    <div key={j} style={{ fontSize: 11, fontWeight: 700, padding: "4px 6px", borderRadius: 4, background: a.featured ? "var(--color-brand-accent)" : "var(--color-bg-brand-tint)", color: a.featured ? "#fff" : "var(--color-brand-primary)", lineHeight: 1.3, cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {a.time} · {a.title}
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-          ))}
+          {cells.map((c, i) => <CalendarCell key={i} cell={c} />)}
+        </div>
+        <div style={{ marginTop: 16, display: "flex", gap: 18, flexWrap: "wrap", fontSize: 12, color: "var(--color-text-secondary)" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><span style={{ width: 11, height: 11, borderRadius: 3, background: "var(--color-brand-accent)" }} /> Destacada</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><span style={{ width: 11, height: 11, borderRadius: 3, background: "var(--color-bg-brand-tint)", border: "1px solid var(--color-border-subtle)" }} /> Actividad</span>
         </div>
       </div>
     </section>
   );
 };
+
+const CalendarCell = ({ cell }) => {
+  const [hover, setHover] = React.useState(false);
+  if (!cell) return <div style={{ background: "var(--color-bg-alt)", minHeight: 132 }} />;
+  const shown = cell.acts.slice(0, 3);
+  const extra = cell.acts.length - shown.length;
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{ background: hover && cell.acts.length ? "var(--color-bg-base)" : "#fff", minHeight: 132, padding: 10, display: "flex", flexDirection: "column", gap: 4, transition: "background var(--duration-fast) var(--ease-out)" }}
+    >
+      <div style={{ fontSize: 15, fontWeight: 700, color: cell.acts.length ? "var(--color-brand-primary)" : "var(--color-text-tertiary)" }}>{cell.day}</div>
+      {shown.map((a, j) => (
+        <div key={j} title={`${a.time} · ${a.title}`} style={{ fontSize: 11, fontWeight: 700, padding: "4px 6px", borderRadius: 4, background: a.featured ? "var(--color-brand-accent)" : "var(--color-bg-brand-tint)", color: a.featured ? "#fff" : "var(--color-brand-primary)", lineHeight: 1.3, cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {a.time} · {a.title}
+        </div>
+      ))}
+      {extra > 0 && <div style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-secondary)", padding: "2px 6px" }}>+{extra} más</div>}
+    </div>
+  );
+};
+
+/* --- DateFilter: filtro por fecha destacado con calendario desplegable --- */
+const periodBtn = (active) => ({
+  padding: "7px 12px", borderRadius: "var(--radius-full)", border: "1px solid var(--color-border-subtle)",
+  background: active ? "var(--color-brand-primary)" : "#fff", color: active ? "#fff" : "var(--color-text-body)",
+  fontFamily: "var(--font-family-primary)", fontSize: 13, fontWeight: 700, cursor: "pointer",
+});
+
+const DateFilter = ({ months, value, onChange, open, setOpen }) => {
+  const label = value.month === "all" ? "Todas las fechas" : (value.day ? `${value.day} ${value.month}` : value.month);
+  const selectedMonth = value.month !== "all" ? months.find((m) => m.label === value.month) : null;
+  return (
+    <div style={{ position: "relative" }}>
+      <button onClick={() => setOpen(!open)}
+        style={{
+          display: "inline-flex", alignItems: "center", gap: 10, padding: "11px 18px",
+          borderRadius: "var(--radius-md)", border: "1px solid var(--color-border-default)",
+          background: value.month === "all" ? "#fff" : "var(--color-bg-brand-tint)",
+          color: "var(--color-brand-primary)", fontFamily: "var(--font-family-primary)",
+          fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "var(--shadow-sm)",
+        }}
+      >
+        <Icon name="calendar" size={18} />
+        {label}
+        <Icon name="chevronDown" size={16} />
+      </button>
+      {open && (
+        <>
+          <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 55 }} />
+          <div style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, zIndex: 60, width: 320, background: "#fff", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--color-border-subtle)", padding: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>Periodo</div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+              <button onClick={() => onChange({ month: "all", day: null })} style={periodBtn(value.month === "all")}>Todas las fechas</button>
+              {months.map((m) => (
+                <button key={m.label} onClick={() => onChange({ month: m.label, day: null })} style={periodBtn(value.month === m.label && !value.day)}>{m.label}</button>
+              ))}
+            </div>
+            {selectedMonth && (
+              <>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>Elige un día con actividad</div>
+                <MiniCalendar month={selectedMonth} day={value.day} onPick={(d) => onChange({ month: selectedMonth.label, day: value.day === d ? null : d })} />
+              </>
+            )}
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 14 }}>
+              <button onClick={() => setOpen(false)} style={{ background: "var(--color-brand-primary)", color: "#fff", border: "none", borderRadius: "var(--radius-md)", padding: "8px 16px", fontFamily: "var(--font-family-primary)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Aplicar</button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+const MiniCalendar = ({ month, day, onPick }) => {
+  const startDow = firstWeekdayMon0(month.label);
+  const total = daysInMonth(month.label);
+  const withActs = new Set(month.activities.map((a) => a.day));
+  const cells = [];
+  for (let i = 0; i < startDow; i++) cells.push(null);
+  for (let d = 1; d <= total; d++) cells.push(String(d).padStart(2, "0"));
+  while (cells.length % 7 !== 0) cells.push(null);
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 3 }}>
+      {["L", "M", "X", "J", "V", "S", "D"].map((d, i) => (
+        <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 900, color: "var(--color-text-tertiary)", padding: "2px 0" }}>{d}</div>
+      ))}
+      {cells.map((dd, i) => {
+        if (!dd) return <div key={i} />;
+        const has = withActs.has(dd);
+        const sel = day === dd;
+        return (
+          <button key={i} onClick={() => has && onPick(dd)} disabled={!has}
+            style={{
+              aspectRatio: "1 / 1", borderRadius: "var(--radius-sm)", border: "none",
+              background: sel ? "var(--color-brand-accent)" : has ? "var(--color-bg-brand-tint)" : "transparent",
+              color: sel ? "#fff" : has ? "var(--color-brand-primary)" : "var(--color-text-tertiary)",
+              fontFamily: "var(--font-family-primary)", fontSize: 12, fontWeight: 700,
+              cursor: has ? "pointer" : "default",
+            }}
+          >
+            {parseInt(dd, 10)}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+const EmptyState = ({ onClear }) => (
+  <div style={{ textAlign: "center", padding: "72px 0", color: "var(--color-text-secondary)" }}>
+    <div style={{ color: "var(--color-text-tertiary)", marginBottom: 16, display: "flex", justifyContent: "center" }}>
+      <Icon name="calendar" size={40} strokeWidth={1.5} />
+    </div>
+    <h3 style={{ fontSize: 22, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 8px" }}>No hay actividades con estos filtros</h3>
+    <p style={{ fontSize: 15, margin: "0 0 20px" }}>Prueba con otra fecha o categoría.</p>
+    <Button variant="outline" onClick={onClear}>Limpiar filtros</Button>
+  </div>
+);
 
 Object.assign(window, { ActividadesPageNueva });

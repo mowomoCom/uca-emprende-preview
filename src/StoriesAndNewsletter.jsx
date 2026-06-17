@@ -1,38 +1,111 @@
 // Nueva Home — Casos de éxito (testimoniales) + Newsletter band
 
+// Pool de referentes. Feedback cliente 16/06: mantener el bloque y mostrar 3 referentes
+// ALEATORIOS en cada visita; priorizar empresas con indicadores fuertes (rondas, premios).
+// PENDIENTE: ampliar a ~20 casos reales y actualizar los desactualizados (input del cliente).
+const ALL_STORIES = [
+  {
+    company: "Algas del Sur",
+    sector: "Biotech · Ciencias del Mar",
+    founder: "Lucía Pérez, Marina Ayala, Ana Rojas",
+    year: "Generación 2023",
+    quote: "Entramos con un TFG y una hoja de cálculo. Salimos con clientes en Japón y nuestra primera ronda cerrada. El Olivillo nos dio una mesa, pero lo que importó fue la red.",
+    metric: "340k€",
+    metricLabel: "Ronda seed",
+    tone: "primary",
+  },
+  {
+    company: "Mareo Lab",
+    sector: "HealthTech",
+    founder: "Elena Casado",
+    year: "Generación 2022",
+    quote: "Los mentores del programa me obligaron a hablar con 80 clientes antes de escribir una sola línea de código. No es cómodo, pero es lo único que funciona.",
+    metric: "18",
+    metricLabel: "Hospitales cliente",
+    tone: "accent",
+  },
+  {
+    company: "Sotavento Energy",
+    sector: "CleanTech · Eólica marina",
+    founder: "Daniel Pardo",
+    year: "Generación 2024",
+    quote: "La cátedra nos conectó con CDTI y con dos business angels el mismo trimestre. No hay aceleradora privada que te dé eso en Cádiz.",
+    metric: "1,2M€",
+    metricLabel: "Financiación pública",
+    tone: "primary",
+  },
+  {
+    company: "Bahía Robotics",
+    sector: "DeepTech · Robótica submarina",
+    founder: "Javier Olmedo, Rocío Vela",
+    year: "Generación 2023",
+    quote: "Pasamos del laboratorio de la EPS a una planta piloto en el puerto. El premio Atrévete nos dio el empujón y la credibilidad para la primera factura grande.",
+    metric: "Premio",
+    metricLabel: "Atrévete 2023",
+    tone: "accent",
+  },
+  {
+    company: "Salinera Viva",
+    sector: "FoodTech · Economía azul",
+    founder: "Marta Gil",
+    year: "Generación 2024",
+    quote: "Recuperamos salinas artesanales y las convertimos en una marca premium. Andalucía Emprende nos acompañó desde el día uno con tutorización real.",
+    metric: "Premio",
+    metricLabel: "Andalucía Emprende",
+    tone: "primary",
+  },
+  {
+    company: "Lumen Analytics",
+    sector: "SaaS · IA aplicada",
+    founder: "Pablo Serrano, Nuria Cano",
+    year: "Generación 2022",
+    quote: "Validamos el producto con tres empresas del tejido gaditano antes de levantar capital. Cuando salimos a la ronda, ya teníamos métricas que enseñar.",
+    metric: "520k€",
+    metricLabel: "Ronda pre-seed",
+    tone: "accent",
+  },
+  {
+    company: "Costa Verde Bio",
+    sector: "AgriTech · Biofertilizantes",
+    founder: "Inés Delgado",
+    year: "Generación 2023",
+    quote: "El acceso a los laboratorios de la UCA y a la red de mentores nos ahorró dos años de prueba y error. Hoy vendemos en tres comunidades.",
+    metric: "Titania",
+    metricLabel: "Aceleración 2023",
+    tone: "primary",
+  },
+  {
+    company: "Náutica Atlas",
+    sector: "Turismo · Plataforma náutica",
+    founder: "Gonzalo Ferrer, Sara Méndez",
+    year: "Generación 2024",
+    quote: "Ganamos el Explorer de Santander X y eso nos abrió la puerta a Madrid y a los primeros inversores. Empezó todo en una mesa de El Olivillo.",
+    metric: "Santander X",
+    metricLabel: "Explorer 2024",
+    tone: "accent",
+  },
+  {
+    company: "Médula Sport",
+    sector: "HealthTech · Rendimiento",
+    founder: "Carlos Aguilar",
+    year: "Generación 2021",
+    quote: "De un proyecto de fin de máster a trabajar con clubes de primera. La cátedra nos enseñó a vender, que es lo que de verdad no te enseñan en la carrera.",
+    metric: "9",
+    metricLabel: "Clubes cliente",
+    tone: "primary",
+  },
+];
+
 const SuccessStories = () => {
-  const stories = [
-    {
-      company: "Algas del Sur",
-      sector: "Biotech · Ciencias del Mar",
-      founder: "Lucía Pérez, Marina Ayala, Ana Rojas",
-      year: "Generación 2023",
-      quote: "Entramos con un TFG y una hoja de cálculo. Salimos con clientes en Japón y nuestra primera ronda cerrada. El Olivillo nos dio una mesa, pero lo que importó fue la red.",
-      metric: "340k€",
-      metricLabel: "Ronda seed",
-      tone: "primary",
-    },
-    {
-      company: "Mareo Lab",
-      sector: "HealthTech",
-      founder: "Elena Casado",
-      year: "Generación 2022",
-      quote: "Los mentores del programa me obligaron a hablar con 80 clientes antes de escribir una sola línea de código. No es cómodo, pero es lo único que funciona.",
-      metric: "18",
-      metricLabel: "Hospitales cliente",
-      tone: "accent",
-    },
-    {
-      company: "Sotavento Energy",
-      sector: "CleanTech · Eólica marina",
-      founder: "Daniel Pardo",
-      year: "Generación 2024",
-      quote: "La cátedra nos conectó con CDTI y con dos business angels el mismo trimestre. No hay aceleradora privada que te dé eso en Cádiz.",
-      metric: "1,2M€",
-      metricLabel: "Financiación pública",
-      tone: "primary",
-    },
-  ];
+  // 3 referentes aleatorios en cada visita (barajado al montar)
+  const stories = React.useMemo(() => {
+    const arr = [...ALL_STORIES];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.slice(0, 3);
+  }, []);
 
   return (
     <section style={{ background: "var(--color-bg-base)", padding: "112px 0" }}>
