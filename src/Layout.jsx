@@ -1,6 +1,8 @@
 // UCA Emprende — Layout components: IntranetBar, Header, Footer
 
 const IntranetBar = () => (
+  // Barra superior reducida a 1-2 enlaces externos relevantes (PENDIENTE: el cliente aportará los definitivos
+  // — p. ej. Vicerrectorado de Emprendimiento y la aplicación del servicio de apoyo / UCA Emprende).
   <div
     style={{
       background: "var(--color-bg-dark)",
@@ -9,18 +11,20 @@ const IntranetBar = () => (
       height: 40,
       display: "flex",
       alignItems: "center",
-      justifyContent: "space-between",
+      justifyContent: "flex-end",
       padding: "0 24px",
     }}
   >
     <ul style={{ listStyle: "none", display: "flex", gap: 24, margin: 0, padding: 0 }}>
-      {["Estudiantes", "Empresas", "Personal UCA"].map((l) => (
-        <li key={l}><a href="#" style={{ color: "inherit", textDecoration: "none", opacity: 0.9 }}>{l}</a></li>
-      ))}
-    </ul>
-    <ul style={{ listStyle: "none", display: "flex", gap: 20, margin: 0, padding: 0 }}>
-      {["BOUCA", "Correo", "Campus Virtual", "Biblioteca"].map((l) => (
-        <li key={l}><a href="#" style={{ color: "inherit", textDecoration: "none", opacity: 0.9, fontSize: 12 }}>{l}</a></li>
+      {[
+        { label: "Vicerrectorado de Emprendimiento", href: "#" },
+        { label: "Servicio de Apoyo UCA Emprende", href: "#" },
+      ].map((l) => (
+        <li key={l.label}>
+          <a href={l.href} style={{ color: "inherit", textDecoration: "none", opacity: 0.9, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6 }}>
+            {l.label}<Icon name="arrowRight" size={13} />
+          </a>
+        </li>
       ))}
     </ul>
   </div>
@@ -29,6 +33,7 @@ const IntranetBar = () => (
 const Header = ({ current = "inicio", onNavigate }) => {
   const items = [
     { id: "inicio", label: "Inicio" },
+    { id: "sobre", label: "Sobre UCA Emprende" },
     { id: "actividades", label: "Actividades" },
     { id: "coworking", label: "Coworking" },
     { id: "programas", label: "Programas" },
@@ -57,7 +62,7 @@ const Header = ({ current = "inicio", onNavigate }) => {
         }}
       >
         <a href="#" onClick={(e)=>{e.preventDefault(); onNavigate && onNavigate("inicio");}} style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-          <Logo variant="emprende" height={44} />
+          <Logo variant="emprende" height={60} />
         </a>
         <nav>
           <ul style={{ listStyle: "none", display: "flex", gap: 32, margin: 0, padding: 0 }}>

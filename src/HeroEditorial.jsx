@@ -76,11 +76,12 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
               </p>
             </div>
 
-            <div style={{ display: "flex", gap: 12, marginTop: 40, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 12, marginTop: 40, flexWrap: "wrap", alignItems: "center" }}>
+              {/* Doble foco: Actividades = acción principal destacada (naranja) · Olivillo = secundaria */}
               <Button variant="primary" size="lg" iconRight="arrowRight" onClick={() => onNavigate && onNavigate("actividades")}>
                 Ver próximas actividades
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="ghost" size="lg" icon="mapPin" onClick={() => onNavigate && onNavigate("coworking")}>
                 Conoce El Olivillo
               </Button>
             </div>

@@ -1,4 +1,6 @@
-// HeroAnimation compacta (para la nueva home — sin labels grandes, más simbólica)
+// HeroAnimation → versión ESTÁTICA del ecosistema UCA Emprende (sin movimiento).
+// Feedback cliente 16/06: eliminar el gráfico animado del hero. Se conserva la composición
+// (núcleo + conectores + chips) pero con cero animación.
 
 const HeroAnimation = () => {
   return (
@@ -13,24 +15,6 @@ const HeroAnimation = () => {
         margin: "0 auto",
       }}
     >
-      <style>{`
-        @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes orbitRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-        @keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: .9; } }
-        @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        .ha-ring-out { animation: orbit 55s linear infinite; transform-origin: 250px 250px; }
-        .ha-ring-in  { animation: orbitRev 40s linear infinite; transform-origin: 250px 250px; }
-        .ha-nucleus  { animation: breathe 4s ease-in-out infinite; transform-origin: 250px 250px; }
-        .ha-conn { animation: pulse 3.2s ease-in-out infinite; }
-        .ha-conn.d1 { animation-delay: 0s; } .ha-conn.d2 { animation-delay: .4s; }
-        .ha-conn.d3 { animation-delay: .8s; } .ha-conn.d4 { animation-delay: 1.2s; }
-        .ha-conn.d5 { animation-delay: 1.6s; } .ha-conn.d6 { animation-delay: 2s; }
-        .ha-chip { animation: float 4s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) {
-          .ha-ring-out, .ha-ring-in, .ha-nucleus, .ha-conn, .ha-chip { animation: none !important; }
-        }
-      `}</style>
 
       <svg viewBox="0 0 500 500" style={{ width: "100%", height: "100%", overflow: "visible" }} aria-hidden="true">
         <defs>
