@@ -38,6 +38,19 @@ const TweaksPanel = ({ tweaks, setTweaks, visible }) => {
         <TweakPill active={!tweaks.showFlagship} onClick={() => set("showFlagship", false)}>Off</TweakPill>
       </TweakRow>
 
+      <TweakRow label="Actividades en inicio (feedback #2)">
+        {[4, 6].map(n => (
+          <TweakPill key={n} active={(tweaks.homeActivities || 4) === n} onClick={() => set("homeActivities", n)}>
+            {n}
+          </TweakPill>
+        ))}
+      </TweakRow>
+
+      <TweakRow label="Bloque 2 (espacio del cliente)">
+        <TweakPill active={tweaks.showClientBlock !== false} onClick={() => set("showClientBlock", true)}>On</TweakPill>
+        <TweakPill active={tweaks.showClientBlock === false} onClick={() => set("showClientBlock", false)}>Off</TweakPill>
+      </TweakRow>
+
       <TweakRow label="Casos de éxito">
         <TweakPill active={tweaks.showStories} onClick={() => set("showStories", true)}>On</TweakPill>
         <TweakPill active={!tweaks.showStories} onClick={() => set("showStories", false)}>Off</TweakPill>

@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1280">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>UCA Emprende — Nueva Home</title>
   <link rel="stylesheet" href="colors_and_type.css">
+  <link rel="stylesheet" href="responsive.css">
   <style>
     html, body { margin: 0; padding: 0; background: var(--color-bg-base); color: var(--color-text-body); }
     * { box-sizing: border-box; }
@@ -36,12 +37,15 @@
       "accentIntensity": "normal",
       "showFlagship": false,
       "showStories": true,
-      "density": "airy"
+      "density": "airy",
+      "homeActivities": 4,
+      "showClientBlock": true
     }/*EDITMODE-END*/;
 
     function App() {
       const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
-      const [editMode, setEditMode] = useState(false);
+      // ?edit en la URL abre el panel de tweaks (útil para alternar 4/6 en vivo durante la revisión)
+      const [editMode, setEditMode] = useState(() => new URLSearchParams(window.location.search).has("edit"));
 
       useEffect(() => {
         const handler = (e) => {

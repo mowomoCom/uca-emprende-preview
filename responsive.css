@@ -1,0 +1,96 @@
+/* ============================================================
+   UCA EMPRENDE — Responsive overrides para la preview
+   Los componentes usan estilos inline (preview sin build), así que
+   este archivo adapta el layout por clase con !important donde toca.
+   Breakpoints: 1080px (navegación) · 760px (rejillas y tipografía).
+   ============================================================ */
+
+/* Evitar desbordes horizontales en cualquier viewport */
+html, body { max-width: 100%; overflow-x: hidden; }
+img { max-width: 100%; }
+
+/* El botón hamburguesa solo existe en pantallas estrechas */
+@media (max-width: 1080px) {
+  .nav-desktop { display: none !important; }
+  .nav-burger { display: inline-flex !important; }
+  .header-search { display: none !important; }
+}
+@media (min-width: 1081px) {
+  .nav-mobile { display: none !important; }
+}
+
+/* ---------- Rejillas y tipografía (≤760px) ---------- */
+@media (max-width: 760px) {
+
+  /* Barra superior de enlaces externos */
+  .intranet-bar { height: auto !important; padding: 8px 16px !important; font-size: 12px !important; }
+  .intranet-bar ul { gap: 14px !important; flex-wrap: wrap; justify-content: flex-end; }
+
+  .header-inner { height: 64px !important; }
+  .header-inner img { height: 44px !important; }
+
+  /* Hero de la home */
+  .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .hero-h1 { font-size: clamp(44px, 12vw, 64px) !important; }
+  .hero-visual { display: none !important; } /* el diagrama del ecosistema no aporta en móvil */
+  .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+
+  /* Filas de actividad (home y actividades): pasan de rejilla de 4 columnas a bloque apilado */
+  .timeline-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 14px !important;
+    align-items: flex-start !important;
+    padding: 20px 8px !important;
+  }
+  .timeline-row > :nth-child(1) { width: 72px !important; height: 72px !important; }   /* foto */
+  .timeline-row > :nth-child(2) > div:nth-child(2) { font-size: 34px !important; }     /* día grande */
+  .timeline-row > :nth-child(3) { flex: 1 1 100% !important; order: 3; max-width: none !important; }
+  .timeline-row > :nth-child(3) h3 { font-size: 19px !important; }
+  .timeline-row > :nth-child(4) {
+    flex: 1 1 100% !important; order: 4;
+    flex-direction: row !important; align-items: center !important;
+    justify-content: space-between !important; text-align: left !important;
+  }
+
+  /* Olivillo: imagen encima, contenido debajo */
+  .olivillo-grid { grid-template-columns: 1fr !important; }
+  .olivillo-grid > :first-child { min-height: 300px !important; }
+  .olivillo-content { padding: 32px 24px !important; }
+  .olivillo-content h2 { font-size: 30px !important; }
+
+  /* Bloque placeholder del cliente */
+  .placeholder-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .placeholder-grid h2 { font-size: 30px !important; }
+  .placeholder-cols { grid-template-columns: 1fr !important; }
+
+  /* Casos de éxito */
+  .stories-grid { grid-template-columns: 1fr !important; }
+
+  /* Footer */
+  .footer-newsletter { grid-template-columns: 1fr !important; }
+  .footer-newsletter form { min-width: 0 !important; flex-wrap: wrap; }
+  .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
+  .footer-bottom { justify-content: center !important; text-align: center; }
+
+  /* Página de actividades */
+  .act-hero-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .act-h1 { font-size: clamp(40px, 11vw, 56px) !important; }
+  .calls-grid { grid-template-columns: 1fr !important; }
+  .suggestion-grid { grid-template-columns: 1fr !important; }
+  .suggestion-grid > :last-child { justify-content: flex-start !important; }
+
+  /* La rejilla mensual necesita ancho mínimo: scroll horizontal contenido en su caja */
+  .calendar-grid { min-width: 680px; }
+
+  /* Títulos de sección: los inline de 40-56px bajan a escala móvil */
+  h2 { font-size: clamp(28px, 8.5vw, 36px) !important; }
+}
+
+/* Ajuste intermedio para tablets: rebajar el hero sin tocar la estructura */
+@media (min-width: 761px) and (max-width: 1080px) {
+  .hero-h1 { font-size: 72px !important; }
+  .act-h1 { font-size: 64px !important; }
+  .stats-grid { gap: 24px !important; }
+}

@@ -113,7 +113,9 @@ const FlagshipBand = () => {
 /* ================================================================
    ActivitiesTimeline — Grid de cards tipo agenda con columna temporal
 ================================================================ */
-const ActivitiesTimeline = ({ onNavigate }) => {
+const ActivitiesTimeline = ({ onNavigate, count = 4 }) => {
+  // El cliente decidirá si en inicio van 4 ó 6 actividades (feedback #2);
+  // `count` llega del panel de tweaks para poder enseñar ambas opciones en la revisión.
   const items = [
     {
       day: "05", month: "MAY", dow: "MAR",
@@ -125,6 +127,7 @@ const ActivitiesTimeline = ({ onNavigate }) => {
       desc: "Una tarde práctica con Elena Casado, fundadora de Mareo Lab, para aprender a hablar con clientes antes de construir nada.",
       seats: "12 / 20 plazas",
       featured: true,
+      image: "uploads/act/act-validacion.jpg",
     },
     {
       day: "12", month: "MAY", dow: "MAR",
@@ -135,6 +138,18 @@ const ActivitiesTimeline = ({ onNavigate }) => {
       title: "Demo Day Primavera 2026",
       desc: "Diez equipos del programa presentan ante inversores y comunidad UCA.",
       seats: "Entrada libre",
+      image: "uploads/act/act-demoday.jpg",
+    },
+    {
+      day: "15", month: "MAY", dow: "VIE",
+      time: "10:00",
+      duration: "2h 30min",
+      location: "El Olivillo",
+      category: "Networking",
+      title: "Pitch clínico con inversores andaluces",
+      desc: "Sesión cerrada con 4 business angels de la red Keiretsu.",
+      seats: "8 / 10 plazas",
+      image: "uploads/act/act-pitch.jpg",
     },
     {
       day: "19", month: "MAY", dow: "MAR",
@@ -145,6 +160,18 @@ const ActivitiesTimeline = ({ onNavigate }) => {
       title: "Financiación pública para startups early-stage",
       desc: "ENISA, CDTI y líneas propias UCA en una sola sesión práctica.",
       seats: "Streaming gratuito",
+      image: "uploads/act/act-financiacion.jpg",
+    },
+    {
+      day: "22", month: "MAY", dow: "VIE",
+      time: "16:00",
+      duration: "2h",
+      location: "El Olivillo",
+      category: "Taller",
+      title: "Legal para fundadores: pactos de socios",
+      desc: "Con Gómez-Acebo & Pombo — plantillas incluidas.",
+      seats: "5 / 24 plazas",
+      image: "uploads/act/act-legal.jpg",
     },
     {
       day: "26", month: "MAY", dow: "MAR",
@@ -155,8 +182,9 @@ const ActivitiesTimeline = ({ onNavigate }) => {
       title: "Open Office: cafés con mentores del ecosistema",
       desc: "Reserva 45 min con un mentor especializado en tu sector. Siete mentores disponibles.",
       seats: "7 slots · por invitación",
+      image: "uploads/act/act-mentores.jpg",
     },
-  ];
+  ].slice(0, count);
 
   return (
     <section style={{ background: "var(--color-bg-alt)", padding: "112px 0" }}>
@@ -194,6 +222,7 @@ const TimelineRow = ({ activity }) => {
 
   return (
     <article
+      className="timeline-row"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

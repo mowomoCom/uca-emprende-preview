@@ -141,13 +141,82 @@ const ServiceRow = ({ num, icon, title, desc, highlight, last }) => {
 };
 
 /* ================================================================
+   ClientBlockPlaceholder — Bloque 2 de la home (feedback #5)
+   Sustituye a "Las 4 formas de acompañarte". El cliente define el
+   contenido y los textos; esto es un esqueleto maquetado para que
+   la home se vea completa en la revisión y el hueco quede claro.
+================================================================ */
+const ClientBlockPlaceholder = () => {
+  const ghostCols = [
+    { icon: "lightbulb", w1: "72%", w2: "94%", w3: "58%" },
+    { icon: "users", w1: "64%", w2: "88%", w3: "70%" },
+    { icon: "graduationCap", w1: "78%", w2: "82%", w3: "50%" },
+  ];
+  return (
+    <section style={{ background: "var(--color-bg-base)", padding: "112px 0" }}>
+      <div className="container">
+        <div style={{
+          border: "2px dashed var(--color-border-default)", borderRadius: "var(--radius-2xl)",
+          padding: "64px 56px", position: "relative", background: "var(--color-bg-alt)",
+        }}>
+          <span style={{
+            position: "absolute", top: -14, left: 48,
+            background: "var(--color-brand-primary)", color: "#fff",
+            fontSize: 11, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase",
+            padding: "6px 14px", borderRadius: "var(--radius-full)",
+          }}>
+            Espacio reservado · contenido por definir
+          </span>
+          <div className="placeholder-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 64, alignItems: "start" }}>
+            <div>
+              <Eyebrow color="primary">Bloque 2 de la home</Eyebrow>
+              <h2 style={{
+                fontSize: 44, lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 900,
+                color: "var(--color-text-primary)", margin: "12px 0 16px", textWrap: "balance",
+              }}>
+                Aquí irá el bloque que defináis.
+              </h2>
+              <p style={{ fontSize: 16, lineHeight: 1.6, color: "var(--color-text-body)", margin: 0, maxWidth: 380 }}>
+                Este hueco sustituye a "Las 4 formas de acompañarte". Cuando UCA Emprende
+                decida el contenido y aporte los textos, se maqueta con la misma línea
+                visual del resto de la página.
+              </p>
+            </div>
+            <div className="placeholder-cols" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+              {ghostCols.map((g, i) => (
+                <div key={i} style={{ background: "#fff", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-subtle)", padding: 24, display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: "var(--radius-md)",
+                    background: "var(--color-bg-brand-tint)", color: "var(--color-brand-primary)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Icon name={g.icon} size={24} strokeWidth={1.75} />
+                  </div>
+                  {[["h", g.w1], ["l", g.w2], ["l", g.w3]].map(([kind, w], j) => (
+                    <div key={j} style={{
+                      height: kind === "h" ? 14 : 9, width: w,
+                      borderRadius: "var(--radius-full)",
+                      background: kind === "h" ? "var(--color-border-default)" : "var(--color-border-subtle)",
+                    }} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ================================================================
    Olivillo Hero — bloque grande con imagen placeholder + datos
 ================================================================ */
 const OlivilloHero = () => {
   return (
     <section style={{ background: "var(--color-bg-alt)", padding: "0 0 112px" }}>
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 0, borderRadius: "var(--radius-2xl)", overflow: "hidden", background: "#fff", boxShadow: "var(--shadow-lg)" }}>
+        <div className="olivillo-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 0, borderRadius: "var(--radius-2xl)", overflow: "hidden", background: "#fff", boxShadow: "var(--shadow-lg)" }}>
           {/* Foto del edificio El Olivillo */}
           <div style={{
             position: "relative",
@@ -196,7 +265,7 @@ const OlivilloHero = () => {
           </div>
 
           {/* Contenido */}
-          <div style={{ padding: "64px 64px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 24 }}>
+          <div className="olivillo-content" style={{ padding: "64px 64px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 24 }}>
             <Eyebrow color="primary">Coworking El Olivillo</Eyebrow>
             <h2 style={{
               fontSize: 44, lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 900,
@@ -242,4 +311,4 @@ const OlivilloHero = () => {
   );
 };
 
-Object.assign(window, { ServicesEditorial, OlivilloHero });
+Object.assign(window, { ServicesEditorial, OlivilloHero, ClientBlockPlaceholder });

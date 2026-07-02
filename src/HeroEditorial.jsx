@@ -35,9 +35,10 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
         </div>
 
         {/* Bloque titular gigante */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 56, alignItems: "end" }}>
+        <div className="hero-grid" style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 56, alignItems: "end" }}>
           <div>
             <h1
+              className="hero-h1"
               style={{
                 fontSize: 108,
                 lineHeight: 0.98,
@@ -89,7 +90,7 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
 
           {/* Columna derecha: ecosistema + tarjeta "Hoy" */}
           <div style={{ display: "flex", flexDirection: "column", gap: 24, paddingBottom: 8 }}>
-            <div style={{ position: "relative" }}>
+            <div className="hero-visual" style={{ position: "relative" }}>
               <HeroAnimation />
             </div>
             <TodayCard />
@@ -98,7 +99,7 @@ const HeroEditorial = ({ accentIntensity = "normal", onNavigate }) => {
 
         {/* Ticker cifras */}
         <div style={{ marginTop: 80, borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", padding: "32px 0" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 40, alignItems: "stretch" }}>
+          <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 40, alignItems: "stretch" }}>
             <StatInline value="45" suffix="años" label="acompañando al emprendimiento UCA" />
             <StatInline value="450" suffix="+" label="emprendedores y emprendedoras formados" />
             <StatInline value="28" label="startups activas en cartera" />
@@ -187,9 +188,10 @@ const TodayCard = () => (
         color: "var(--color-text-secondary)",
         display: "inline-flex", alignItems: "center", gap: 8,
       }}>
+        {/* Punto de "en directo" estático — el cliente pidió cero movimiento en el hero */}
         <span style={{ position: "relative", width: 8, height: 8 }}>
           <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#22c55e" }} />
-          <span style={{ position: "absolute", inset: -3, borderRadius: "50%", background: "rgba(34,197,94,0.3)", animation: "pulse-dot 2s ease-in-out infinite" }} />
+          <span style={{ position: "absolute", inset: -3, borderRadius: "50%", background: "rgba(34,197,94,0.25)" }} />
         </span>
         Próxima actividad · 17:00
       </div>
@@ -208,7 +210,6 @@ const TodayCard = () => (
     }}>
       Inscribirme →
     </a>
-    <style>{`@keyframes pulse-dot { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.6); opacity: 0; } }`}</style>
   </div>
 );
 

@@ -15,32 +15,40 @@ const daysInMonth = (label) => {
   const { monthIndex, year } = parseMonthLabel(label);
   return new Date(year, monthIndex + 1, 0).getDate();
 };
+/* Clave numérica ordenable (aaaammdd) para comparar días entre meses */
+const dayKey = (label, day) => {
+  const { monthIndex, year } = parseMonthLabel(label);
+  return year * 10000 + (monthIndex + 1) * 100 + parseInt(day, 10);
+};
+const fmtDay = (pick) => `${parseInt(pick.day, 10)} ${pick.label.split(" ")[0].slice(0, 3).toLowerCase()}`;
 
 const ActividadesPageNueva = () => {
   const [view, setView] = React.useState("lista"); // lista | calendario
   const [search, setSearch] = React.useState("");
   const [activeCat, setActiveCat] = React.useState("Todas");
-  const [dateFilter, setDateFilter] = React.useState({ month: "all", day: null });
+  // Filtro de fecha: mes rápido ("all" | label) y/o rango de días {from, to} elegido en el calendario
+  const [dateFilter, setDateFilter] = React.useState({ month: "all", from: null, to: null });
   const [dateOpen, setDateOpen] = React.useState(false);
 
   const months = [
     {
       label: "Mayo 2026",
       activities: [
-        { day: "05", dow: "MAR", time: "17:00", duration: "3h", location: "El Olivillo", category: "Taller", title: "Validación temprana: cómo saber si tu idea tiene mercado", desc: "Una tarde práctica con Elena Casado, fundadora de Mareo Lab.", seats: "12 / 20 plazas", featured: true },
-        { day: "12", dow: "MAR", time: "19:00", duration: "2h", location: "Paraninfo UCA", category: "Evento", title: "Demo Day Primavera 2026", desc: "Diez equipos del programa presentan ante inversores y comunidad UCA.", seats: "Entrada libre" },
-        { day: "15", dow: "VIE", time: "10:00", duration: "2h 30min", location: "El Olivillo", category: "Networking", title: "Pitch clínico con inversores andaluces", desc: "Sesión cerrada con 4 business angels de la red Keiretsu.", seats: "8 / 10 plazas" },
-        { day: "19", dow: "MAR", time: "10:00", duration: "1h 30min", location: "Online", category: "Webinar", title: "Financiación pública para startups early-stage", desc: "ENISA, CDTI y líneas propias UCA en una sola sesión.", seats: "Streaming gratuito" },
-        { day: "22", dow: "VIE", time: "16:00", duration: "2h", location: "El Olivillo", category: "Taller", title: "Legal para fundadores: pactos de socios", desc: "Con Gómez-Acebo & Pombo — plantillas incluidas.", seats: "5 / 24 plazas" },
-        { day: "26", dow: "MAR", time: "18:00", duration: "1h 30min", location: "Aula Magna", category: "Evento", title: "Mujeres que emprenden: mesa redonda", desc: "Cuatro fundadoras UCA cuentan su camino real.", seats: "Entrada libre" },
+        { day: "05", dow: "MAR", time: "17:00", duration: "3h", location: "El Olivillo", category: "Taller", title: "Validación temprana: cómo saber si tu idea tiene mercado", desc: "Una tarde práctica con Elena Casado, fundadora de Mareo Lab.", seats: "12 / 20 plazas", featured: true, image: "uploads/act/act-validacion.jpg" },
+        { day: "12", dow: "MAR", time: "19:00", duration: "2h", location: "Paraninfo UCA", category: "Evento", title: "Demo Day Primavera 2026", desc: "Diez equipos del programa presentan ante inversores y comunidad UCA.", seats: "Entrada libre", image: "uploads/act/act-demoday.jpg" },
+        { day: "15", dow: "VIE", time: "10:00", duration: "2h 30min", location: "El Olivillo", category: "Networking", title: "Pitch clínico con inversores andaluces", desc: "Sesión cerrada con 4 business angels de la red Keiretsu.", seats: "8 / 10 plazas", image: "uploads/act/act-pitch.jpg" },
+        { day: "19", dow: "MAR", time: "10:00", duration: "1h 30min", location: "Online", category: "Webinar", title: "Financiación pública para startups early-stage", desc: "ENISA, CDTI y líneas propias UCA en una sola sesión.", seats: "Streaming gratuito", image: "uploads/act/act-financiacion.jpg" },
+        { day: "22", dow: "VIE", time: "16:00", duration: "2h", location: "El Olivillo", category: "Taller", title: "Legal para fundadores: pactos de socios", desc: "Con Gómez-Acebo & Pombo — plantillas incluidas.", seats: "5 / 24 plazas", image: "uploads/act/act-legal.jpg" },
+        { day: "26", dow: "MAR", time: "18:00", duration: "1h 30min", location: "Aula Magna", category: "Evento", title: "Mujeres que emprenden: mesa redonda", desc: "Cuatro fundadoras UCA cuentan su camino real.", seats: "Entrada libre", image: "uploads/act/act-mujeres.jpg" },
+        /* Sin `image` a propósito: enseña el fallback por categoría cuando el cliente no aporte foto */
         { day: "29", dow: "VIE", time: "11:00", duration: "2h", location: "Online", category: "Webinar", title: "Ciberseguridad básica para tu producto digital", desc: "Checklist OWASP, gestión de secretos, auditoría rápida.", seats: "Streaming gratuito" },
       ],
     },
     {
       label: "Junio 2026",
       activities: [
-        { day: "02", dow: "MAR", time: "17:30", duration: "2h", location: "El Olivillo", category: "Mentoring", title: "Open Office: cafés con mentores", desc: "Reserva 45 min con un mentor especializado en tu sector.", seats: "7 slots" },
-        { day: "09", dow: "MAR", time: "10:00", duration: "1 día", location: "Cádiz · El Olivillo", category: "Bootcamp", title: "Bootcamp de pricing para SaaS", desc: "Modelos de precio, packaging y experimentos reales.", seats: "16 / 20 plazas" },
+        { day: "02", dow: "MAR", time: "17:30", duration: "2h", location: "El Olivillo", category: "Mentoring", title: "Open Office: cafés con mentores", desc: "Reserva 45 min con un mentor especializado en tu sector.", seats: "7 slots", image: "uploads/act/act-mentores.jpg" },
+        { day: "09", dow: "MAR", time: "10:00", duration: "1 día", location: "Cádiz · El Olivillo", category: "Bootcamp", title: "Bootcamp de pricing para SaaS", desc: "Modelos de precio, packaging y experimentos reales.", seats: "16 / 20 plazas", image: "uploads/act/act-bootcamp.jpg" },
       ],
     },
   ];
@@ -57,8 +65,12 @@ const ActividadesPageNueva = () => {
   const q = search.trim().toLowerCase();
   const matchesActivity = (a, monthLabel) => {
     if (activeCat !== "Todas" && a.category !== activeCat) return false;
-    if (dateFilter.month !== "all" && monthLabel !== dateFilter.month) return false;
-    if (dateFilter.day && a.day !== dateFilter.day) return false;
+    if (dateFilter.from) {
+      const k = dayKey(monthLabel, a.day);
+      const kFrom = dateFilter.from.key;
+      const kTo = dateFilter.to ? dateFilter.to.key : kFrom;
+      if (k < kFrom || k > kTo) return false;
+    } else if (dateFilter.month !== "all" && monthLabel !== dateFilter.month) return false;
     if (q && !`${a.title} ${a.desc} ${a.category} ${a.location}`.toLowerCase().includes(q)) return false;
     return true;
   };
@@ -67,14 +79,18 @@ const ActividadesPageNueva = () => {
     .filter((m) => m.activities.length > 0);
   const totalCount = filteredMonths.reduce((n, m) => n + m.activities.length, 0);
 
-  // Mes que se pinta en la vista calendario: el del filtro de fecha, o el primero disponible
-  const calendarMonthLabel = dateFilter.month !== "all" ? dateFilter.month : months[0].label;
+  // Mes que se pinta en la vista calendario: el del rango/filtro de fecha, o el primero disponible
+  const calendarMonthLabel = dateFilter.from ? dateFilter.from.label : (dateFilter.month !== "all" ? dateFilter.month : months[0].label);
   const calendarMonth = months.find((m) => m.label === calendarMonthLabel) || months[0];
 
   // Chips de filtros aplicados (derivados del estado)
-  const clearAll = () => { setDateFilter({ month: "all", day: null }); setActiveCat("Todas"); setSearch(""); };
+  const noDate = { month: "all", from: null, to: null };
+  const clearAll = () => { setDateFilter(noDate); setActiveCat("Todas"); setSearch(""); };
+  const dateLabel = dateFilter.from
+    ? (dateFilter.to && dateFilter.to.key !== dateFilter.from.key ? `${fmtDay(dateFilter.from)} – ${fmtDay(dateFilter.to)}` : fmtDay(dateFilter.from))
+    : (dateFilter.month !== "all" ? dateFilter.month : null);
   const applied = [];
-  if (dateFilter.month !== "all") applied.push({ key: "date", label: dateFilter.day ? `${dateFilter.day} · ${dateFilter.month}` : dateFilter.month, clear: () => setDateFilter({ month: "all", day: null }) });
+  if (dateLabel) applied.push({ key: "date", label: dateLabel, clear: () => setDateFilter(noDate) });
   if (activeCat !== "Todas") applied.push({ key: "cat", label: activeCat, clear: () => setActiveCat("Todas") });
   if (q) applied.push({ key: "search", label: `"${search.trim()}"`, clear: () => setSearch("") });
 
@@ -98,10 +114,10 @@ const ActividadesPageNueva = () => {
             <span style={{ color: "var(--color-text-primary)", fontWeight: 700 }}>Actividades</span>
           </nav>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 64, alignItems: "end" }}>
+          <div className="act-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 64, alignItems: "end" }}>
             <div>
               <Eyebrow color="primary">Agenda UCA Emprende · curso 2025/26</Eyebrow>
-              <h1 style={{ fontSize: 92, lineHeight: 0.98, letterSpacing: "-0.035em", fontWeight: 900, color: "var(--color-text-primary)", margin: "12px 0 24px", textWrap: "balance" }}>
+              <h1 className="act-h1" style={{ fontSize: 92, lineHeight: 0.98, letterSpacing: "-0.035em", fontWeight: 900, color: "var(--color-text-primary)", margin: "12px 0 24px", textWrap: "balance" }}>
                 Un <span style={{ fontStyle: "italic", fontWeight: 300 }}>plan</span><br />
                 cada semana.
               </h1>
@@ -143,7 +159,7 @@ const ActividadesPageNueva = () => {
             <Eyebrow>Convocatorias abiertas</Eyebrow>
             <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>Cierran pronto · presenta tu proyecto</span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          <div className="calls-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {calls.map((c, i) => <CallCard key={i} {...c} />)}
           </div>
         </div>
@@ -230,7 +246,7 @@ const ActividadesPageNueva = () => {
       {/* SUGGESTION BAND */}
       <section style={{ background: "var(--color-bg-alt)", padding: "72px 0" }}>
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
+          <div className="suggestion-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
             <div>
               <Eyebrow color="primary">¿Echas algo en falta?</Eyebrow>
               <h2 style={{ fontSize: 40, lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 900, color: "var(--color-text-primary)", margin: "12px 0 12px", textWrap: "balance" }}>
@@ -306,6 +322,7 @@ const ActTimelineRow = ({ activity }) => {
   const { day, dow, time, duration, location, category, title, desc, seats, featured } = activity;
   return (
     <article
+      className="timeline-row"
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
       style={{
         display: "grid", gridTemplateColumns: "88px 96px 1fr auto", gap: 24, alignItems: "center",
@@ -365,11 +382,13 @@ const CalendarView = ({ month, activeCat = "Todas", search = "" }) => {
         <h2 style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-0.02em", color: "var(--color-text-primary)", margin: "0 0 24px", textTransform: "uppercase" }}>
           {month.label}
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 1, background: "var(--color-border-subtle)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-          {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((d) => (
-            <div key={d} style={{ background: "var(--color-bg-alt)", padding: "12px 14px", fontSize: 11, fontWeight: 900, letterSpacing: "0.1em", color: "var(--color-text-secondary)", textTransform: "uppercase" }}>{d}</div>
-          ))}
-          {cells.map((c, i) => <CalendarCell key={i} cell={c} />)}
+        <div className="calendar-scroll" style={{ overflowX: "auto" }}>
+          <div className="calendar-grid" style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 1, background: "var(--color-border-subtle)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+            {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((d) => (
+              <div key={d} style={{ background: "var(--color-bg-alt)", padding: "12px 14px", fontSize: 11, fontWeight: 900, letterSpacing: "0.1em", color: "var(--color-text-secondary)", textTransform: "uppercase" }}>{d}</div>
+            ))}
+            {cells.map((c, i) => <CalendarCell key={i} cell={c} />)}
+          </div>
         </div>
         <div style={{ marginTop: 16, display: "flex", gap: 18, flexWrap: "wrap", fontSize: 12, color: "var(--color-text-secondary)" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><span style={{ width: 11, height: 11, borderRadius: 3, background: "var(--color-brand-accent)" }} /> Destacada</span>
@@ -409,15 +428,27 @@ const periodBtn = (active) => ({
 });
 
 const DateFilter = ({ months, value, onChange, open, setOpen }) => {
-  const label = value.month === "all" ? "Todas las fechas" : (value.day ? `${value.day} ${value.month}` : value.month);
-  const selectedMonth = value.month !== "all" ? months.find((m) => m.label === value.month) : null;
+  const label = value.from
+    ? (value.to && value.to.key !== value.from.key ? `${fmtDay(value.from)} – ${fmtDay(value.to)}` : fmtDay(value.from))
+    : (value.month === "all" ? "Todas las fechas" : value.month);
+  const hasFilter = value.month !== "all" || value.from;
+
+  // Selección de rango: 1er click = día suelto; 2º click = extiende a rango; 3º = empieza de nuevo
+  const pickDay = (monthLabel, dd) => {
+    const pick = { key: dayKey(monthLabel, dd), label: monthLabel, day: dd };
+    if (!value.from || value.to) { onChange({ month: "all", from: pick, to: null }); return; }
+    if (pick.key === value.from.key) { onChange({ month: "all", from: null, to: null }); return; }
+    const [a, b] = pick.key < value.from.key ? [pick, value.from] : [value.from, pick];
+    onChange({ month: "all", from: a, to: b });
+  };
+
   return (
     <div style={{ position: "relative" }}>
       <button onClick={() => setOpen(!open)}
         style={{
           display: "inline-flex", alignItems: "center", gap: 10, padding: "11px 18px",
           borderRadius: "var(--radius-md)", border: "1px solid var(--color-border-default)",
-          background: value.month === "all" ? "#fff" : "var(--color-bg-brand-tint)",
+          background: hasFilter ? "var(--color-bg-brand-tint)" : "#fff",
           color: "var(--color-brand-primary)", fontFamily: "var(--font-family-primary)",
           fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "var(--shadow-sm)",
         }}
@@ -429,21 +460,22 @@ const DateFilter = ({ months, value, onChange, open, setOpen }) => {
       {open && (
         <>
           <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 55 }} />
-          <div style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, zIndex: 60, width: 320, background: "#fff", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--color-border-subtle)", padding: 16 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>Periodo</div>
+          <div style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, zIndex: 60, width: 340, background: "#fff", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--color-border-subtle)", padding: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>Atajos</div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
-              <button onClick={() => onChange({ month: "all", day: null })} style={periodBtn(value.month === "all")}>Todas las fechas</button>
+              <button onClick={() => onChange({ month: "all", from: null, to: null })} style={periodBtn(value.month === "all" && !value.from)}>Todas las fechas</button>
               {months.map((m) => (
-                <button key={m.label} onClick={() => onChange({ month: m.label, day: null })} style={periodBtn(value.month === m.label && !value.day)}>{m.label}</button>
+                <button key={m.label} onClick={() => onChange({ month: m.label, from: null, to: null })} style={periodBtn(value.month === m.label && !value.from)}>{m.label}</button>
               ))}
             </div>
-            {selectedMonth && (
-              <>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>Elige un día con actividad</div>
-                <MiniCalendar month={selectedMonth} day={value.day} onPick={(d) => onChange({ month: selectedMonth.label, day: value.day === d ? null : d })} />
-              </>
-            )}
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: 10 }}>
+              O elige un día — o un rango con dos clicks
+            </div>
+            <MiniCalendar months={months} value={value} onPick={pickDay} />
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 14 }}>
+              <span style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
+                {value.from && !value.to ? "Elige el final del rango…" : " "}
+              </span>
               <button onClick={() => setOpen(false)} style={{ background: "var(--color-brand-primary)", color: "#fff", border: "none", borderRadius: "var(--radius-md)", padding: "8px 16px", fontFamily: "var(--font-family-primary)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Aplicar</button>
             </div>
           </div>
@@ -453,37 +485,69 @@ const DateFilter = ({ months, value, onChange, open, setOpen }) => {
   );
 };
 
-const MiniCalendar = ({ month, day, onPick }) => {
+/* Calendario mensual con navegación ‹ › entre los meses con agenda y selección de día/rango */
+const MiniCalendar = ({ months, value, onPick }) => {
+  const initialIdx = value.from ? Math.max(0, months.findIndex((m) => m.label === value.from.label)) : 0;
+  const [idx, setIdx] = React.useState(initialIdx);
+  const month = months[idx];
   const startDow = firstWeekdayMon0(month.label);
   const total = daysInMonth(month.label);
   const withActs = new Set(month.activities.map((a) => a.day));
+  const kFrom = value.from ? value.from.key : null;
+  const kTo = value.to ? value.to.key : kFrom;
+
   const cells = [];
   for (let i = 0; i < startDow; i++) cells.push(null);
   for (let d = 1; d <= total; d++) cells.push(String(d).padStart(2, "0"));
   while (cells.length % 7 !== 0) cells.push(null);
+
+  const navBtn = (disabled) => ({
+    width: 28, height: 28, borderRadius: "var(--radius-sm)", border: "1px solid var(--color-border-subtle)",
+    background: "#fff", color: disabled ? "var(--color-text-tertiary)" : "var(--color-brand-primary)",
+    fontFamily: "var(--font-family-primary)", fontSize: 14, fontWeight: 700,
+    cursor: disabled ? "default" : "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center",
+  });
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 3 }}>
-      {["L", "M", "X", "J", "V", "S", "D"].map((d, i) => (
-        <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 900, color: "var(--color-text-tertiary)", padding: "2px 0" }}>{d}</div>
-      ))}
-      {cells.map((dd, i) => {
-        if (!dd) return <div key={i} />;
-        const has = withActs.has(dd);
-        const sel = day === dd;
-        return (
-          <button key={i} onClick={() => has && onPick(dd)} disabled={!has}
-            style={{
-              aspectRatio: "1 / 1", borderRadius: "var(--radius-sm)", border: "none",
-              background: sel ? "var(--color-brand-accent)" : has ? "var(--color-bg-brand-tint)" : "transparent",
-              color: sel ? "#fff" : has ? "var(--color-brand-primary)" : "var(--color-text-tertiary)",
-              fontFamily: "var(--font-family-primary)", fontSize: 12, fontWeight: 700,
-              cursor: has ? "pointer" : "default",
-            }}
-          >
-            {parseInt(dd, 10)}
-          </button>
-        );
-      })}
+    <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+        <button aria-label="Mes anterior" disabled={idx === 0} onClick={() => setIdx(idx - 1)} style={navBtn(idx === 0)}>‹</button>
+        <span style={{ fontSize: 13, fontWeight: 900, color: "var(--color-text-primary)", letterSpacing: "0.02em" }}>{month.label}</span>
+        <button aria-label="Mes siguiente" disabled={idx === months.length - 1} onClick={() => setIdx(idx + 1)} style={navBtn(idx === months.length - 1)}>›</button>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 3 }}>
+        {["L", "M", "X", "J", "V", "S", "D"].map((d, i) => (
+          <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 900, color: "var(--color-text-tertiary)", padding: "2px 0" }}>{d}</div>
+        ))}
+        {cells.map((dd, i) => {
+          if (!dd) return <div key={i} />;
+          const k = dayKey(month.label, dd);
+          const has = withActs.has(dd);
+          const isEnd = kFrom && (k === kFrom || k === kTo);
+          const inRange = kFrom && k > kFrom && k < kTo;
+          return (
+            <button key={i} onClick={() => onPick(month.label, dd)}
+              style={{
+                aspectRatio: "1 / 1", borderRadius: "var(--radius-sm)", border: "none", position: "relative",
+                background: isEnd ? "var(--color-brand-primary)" : inRange ? "var(--color-bg-brand-tint)" : "transparent",
+                color: isEnd ? "#fff" : has ? "var(--color-brand-primary)" : "var(--color-text-secondary)",
+                fontFamily: "var(--font-family-primary)", fontSize: 12, fontWeight: has || isEnd ? 900 : 400,
+                cursor: "pointer",
+              }}
+            >
+              {parseInt(dd, 10)}
+              {has && !isEnd && (
+                <span style={{ position: "absolute", left: "50%", bottom: 3, transform: "translateX(-50%)", width: 4, height: 4, borderRadius: "50%", background: "var(--color-brand-accent)" }} />
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ marginTop: 8, display: "flex", gap: 14, fontSize: 11, color: "var(--color-text-secondary)" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+          <span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--color-brand-accent)", display: "inline-block" }} /> Día con actividad
+        </span>
+      </div>
     </div>
   );
 };

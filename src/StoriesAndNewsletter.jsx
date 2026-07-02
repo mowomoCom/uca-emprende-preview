@@ -127,7 +127,7 @@ const SuccessStories = () => {
           <Button variant="outline" iconRight="arrowRight">Todas las startups</Button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+        <div className="stories-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
           {stories.map((s, i) => <StoryCard key={i} {...s} />)}
         </div>
       </div>
