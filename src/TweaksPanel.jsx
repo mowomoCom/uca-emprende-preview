@@ -46,11 +46,6 @@ const TweaksPanel = ({ tweaks, setTweaks, visible }) => {
         ))}
       </TweakRow>
 
-      <TweakRow label="Bloque 2 (espacio del cliente)">
-        <TweakPill active={tweaks.showClientBlock !== false} onClick={() => set("showClientBlock", true)}>On</TweakPill>
-        <TweakPill active={tweaks.showClientBlock === false} onClick={() => set("showClientBlock", false)}>Off</TweakPill>
-      </TweakRow>
-
       <TweakRow label="Casos de éxito">
         <TweakPill active={tweaks.showStories} onClick={() => set("showStories", true)}>On</TweakPill>
         <TweakPill active={!tweaks.showStories} onClick={() => set("showStories", false)}>Off</TweakPill>

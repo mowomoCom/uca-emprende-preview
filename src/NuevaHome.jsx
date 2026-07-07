@@ -10,9 +10,7 @@ const NuevaHome = ({ tweaks, onNavigate }) => {
       {tweaks.showFlagship && <FlagshipBand />}
       {/* Bloque 1 — nº de actividades (4 ó 6) pendiente de decisión del cliente; se alterna desde tweaks */}
       <ActivitiesTimeline onNavigate={onNavigate} count={tweaks.homeActivities || 4} />
-      {/* Bloque 2 — esqueleto del bloque que definirá el cliente (sustituye a "Las 4 formas", feedback #5) */}
-      {tweaks.showClientBlock !== false && <ClientBlockPlaceholder />}
-      {/* Bloque 3 */}
+      {/* Bloque 2 */}
       <OlivilloHero />
       {/* Bloque 4 — referentes / casos de éxito (se conserva) */}
       {tweaks.showStories && <SuccessStories />}
