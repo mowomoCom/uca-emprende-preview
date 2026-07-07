@@ -57,9 +57,8 @@
         return () => window.removeEventListener("message", handler);
       }, []);
 
-      // Navegación entre páginas de la preview
-      const PAGES = { inicio: "index.html", actividades: "actividades.html", coworking: "coworking.html", actividad: "actividad.html" };
-      const navigate = (page) => { const u = PAGES[page]; if (u) window.location.href = u; };
+      // Navegación centralizada (definida en Layout.jsx)
+      const navigate = ucaNavigate;
 
       return (
         <div>

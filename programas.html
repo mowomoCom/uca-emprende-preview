@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UCA Emprende — Actividades</title>
+  <title>UCA Emprende — Programas</title>
   <link rel="stylesheet" href="colors_and_type.css">
   <link rel="stylesheet" href="responsive.css">
   <style>
@@ -21,8 +21,7 @@
 
   <script type="text/babel" src="src/Primitives.jsx"></script>
   <script type="text/babel" src="src/Layout.jsx"></script>
-  <script type="text/babel" src="src/Cards.jsx"></script>
-  <script type="text/babel" src="src/ActividadesPageNueva.jsx"></script>
+  <script type="text/babel" src="src/ProgramasPage.jsx"></script>
 
   <script type="text/babel">
     const navigate = ucaNavigate;
@@ -30,8 +29,8 @@
       return (
         <div>
           <IntranetBar />
-          <Header current="actividades" onNavigate={navigate} />
-          <ActividadesPageNueva onNavigate={navigate} />
+          <Header current="programas" onNavigate={navigate} />
+          <ProgramasPage onNavigate={navigate} />
           <Footer />
         </div>
       );

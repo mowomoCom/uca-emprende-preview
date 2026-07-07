@@ -24,8 +24,7 @@
   <script type="text/babel" src="src/CoworkingPage.jsx"></script>
 
   <script type="text/babel">
-    const PAGES = { inicio: "index.html", actividades: "actividades.html", coworking: "coworking.html", actividad: "actividad.html" };
-    const navigate = (id) => { const u = PAGES[id]; if (u) window.location.href = u; };
+    const navigate = ucaNavigate;
     function App() {
       return (
         <div>

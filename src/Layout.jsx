@@ -236,4 +236,18 @@ const Footer = () => {
   );
 };
 
-Object.assign(window, { IntranetBar, Header, Footer });
+// Navegación entre las páginas de la preview (mapa único compartido por todos los HTML)
+const UCA_PAGES = {
+  inicio: "index.html",
+  sobre: "sobre.html",
+  actividades: "actividades.html",
+  actividad: "actividad.html",
+  coworking: "coworking.html",
+  programas: "programas.html",
+  blog: "blog.html",
+  articulo: "articulo.html",
+  contacto: "contacto.html",
+};
+const ucaNavigate = (id) => { const u = UCA_PAGES[id]; if (u) window.location.href = u; };
+
+Object.assign(window, { IntranetBar, Header, Footer, UCA_PAGES, ucaNavigate });

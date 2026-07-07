@@ -94,3 +94,54 @@ img { max-width: 100%; }
   .act-h1 { font-size: 64px !important; }
   .stats-grid { gap: 24px !important; }
 }
+
+/* ============================================================
+   Páginas interiores (single actividad, coworking, sobre,
+   programas, blog, artículo, contacto)
+   ============================================================ */
+
+/* Tablet: rejillas de 4 columnas pasan a 2 */
+@media (min-width: 641px) and (max-width: 1080px) {
+  .cow-stats-grid, .sob-stats-grid, .sob-values-grid,
+  .sob-milestones-grid, .sob-team-grid, .prg-itinerary-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .cow-plans-grid, .cow-amenities-grid, .det-related-grid,
+  .blg-grid, .art-related-grid { grid-template-columns: 1fr 1fr !important; }
+  .prg-itinerary-grid > div { border-right: none !important; border-bottom: 1px solid var(--color-border-subtle); }
+}
+
+@media (max-width: 760px) {
+  /* Titulares grandes de las interiores */
+  .det-h1, .cow-h1, .sob-h1, .prg-h1, .blg-h1, .art-h1, .con-h1 {
+    font-size: clamp(36px, 10vw, 52px) !important;
+  }
+
+  /* Todo a una columna */
+  .det-hero-grid, .det-body-grid, .det-related-grid,
+  .cow-hero-grid, .cow-stats-grid, .cow-plans-grid, .cow-amenities-grid, .cow-cta-grid,
+  .sob-mission-grid, .sob-stats-grid, .sob-values-grid, .sob-milestones-grid, .sob-team-grid,
+  .prg-itinerary-grid, .blg-featured, .blg-grid, .art-related-grid,
+  .con-grid, .con-form-row, .con-faq-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* La tarjeta lateral de inscripción deja de ser sticky */
+  .det-aside { position: static !important; }
+
+  /* Separadores del itinerario en vertical */
+  .prg-itinerary-grid > div { border-right: none !important; border-bottom: 1px solid var(--color-border-subtle); }
+  .prg-itinerary-grid > div:last-child { border-bottom: none; }
+
+  /* Filas de programa: de rejilla a bloque apilado */
+  .prg-row { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .prg-row-cta { width: 100%; }
+  .prg-row-cta button { width: 100%; }
+
+  /* La galería del coworking a una sola columna (anula los spans) */
+  .cow-gallery-grid { grid-template-columns: 1fr !important; grid-auto-rows: 200px !important; }
+  .cow-gallery-grid > div { grid-column: auto !important; }
+
+  /* Cuerpo del artículo: márgenes cómodos en móvil */
+  .art-body { max-width: 100% !important; }
+}
