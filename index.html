@@ -57,12 +57,9 @@
         return () => window.removeEventListener("message", handler);
       }, []);
 
-      const navigate = (page) => {
-        // Por ahora sólo la home; navegación expone los IDs esperados por el layout
-        if (page === "actividades") {
-          window.scrollTo({ top: document.querySelector('[data-section="activities"]')?.offsetTop || 0, behavior: "smooth" });
-        }
-      };
+      // Navegación entre páginas de la preview
+      const PAGES = { inicio: "index.html", actividades: "actividades.html", coworking: "coworking.html", actividad: "actividad.html" };
+      const navigate = (page) => { const u = PAGES[page]; if (u) window.location.href = u; };
 
       return (
         <div>

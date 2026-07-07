@@ -323,6 +323,7 @@ const ActTimelineRow = ({ activity }) => {
   return (
     <article
       className="timeline-row"
+      onClick={() => { window.location.href = "actividad.html"; }}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
       style={{
         display: "grid", gridTemplateColumns: "88px 96px 1fr auto", gap: 24, alignItems: "center",

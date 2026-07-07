@@ -232,8 +232,8 @@ const OlivilloHero = () => {
             </div>
 
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Button variant="secondary" size="lg">Reservar visita</Button>
-              <Button variant="ghost" iconRight="arrowRight">Tarifas y planos</Button>
+              <Button variant="secondary" size="lg" onClick={() => { window.location.href = "coworking.html"; }}>Reservar visita</Button>
+              <Button variant="ghost" iconRight="arrowRight" onClick={() => { window.location.href = "coworking.html"; }}>Tarifas y planos</Button>
             </div>
           </div>
         </div>
