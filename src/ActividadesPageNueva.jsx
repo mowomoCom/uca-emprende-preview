@@ -109,7 +109,7 @@ const ActividadesPageNueva = () => {
 
         <div className="container" style={{ position: "relative" }}>
           <nav style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: 24, display: "flex", alignItems: "center", gap: 8 }}>
-            <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Inicio</a>
+            <a href="index.html" style={{ color: "inherit", textDecoration: "none" }}>Inicio</a>
             <span>/</span>
             <span style={{ color: "var(--color-text-primary)", fontWeight: 700 }}>Actividades</span>
           </nav>
@@ -258,8 +258,8 @@ const ActividadesPageNueva = () => {
               </p>
             </div>
             <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", flexWrap: "wrap" }}>
-              <Button variant="secondary" size="lg" iconRight="arrowRight">Proponer actividad</Button>
-              <Button variant="outline" size="lg">Ver guía</Button>
+              <Button variant="secondary" size="lg" iconRight="arrowRight" onClick={() => { window.location.href = "contacto.html"; }}>Proponer actividad</Button>
+              <Button variant="outline" size="lg" onClick={() => { window.location.href = "contacto.html"; }}>Ver guía</Button>
             </div>
           </div>
         </div>

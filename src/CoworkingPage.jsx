@@ -65,8 +65,8 @@ const CoworkingPage = ({ onNavigate }) => {
                 zona maker y una comunidad activa de <strong style={{ color: "var(--color-text-primary)" }}>80+ emprendedores UCA</strong> trabajando cada día.
               </p>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <Button variant="primary" size="lg" iconRight="arrowRight">Reservar visita</Button>
-                <Button variant="outline" size="lg" icon="calendar">Reservar sala</Button>
+                <Button variant="primary" size="lg" iconRight="arrowRight" onClick={go("contacto")}>Reservar visita</Button>
+                <Button variant="outline" size="lg" icon="calendar" onClick={go("contacto")}>Reservar sala</Button>
               </div>
             </div>
 
@@ -187,7 +187,7 @@ const CoworkingPage = ({ onNavigate }) => {
                 ))}
               </div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <Button variant="primary" size="lg" iconRight="arrowRight">Reservar visita</Button>
+                <Button variant="primary" size="lg" iconRight="arrowRight" onClick={go("contacto")}>Reservar visita</Button>
                 <Button variant="white" size="lg" onClick={go("actividades")}>Ver actividades</Button>
               </div>
             </div>

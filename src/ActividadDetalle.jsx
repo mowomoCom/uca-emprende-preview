@@ -211,7 +211,7 @@ const ActividadDetalle = ({ onNavigate }) => {
                   <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 6 }}>Quedan {seatsLeft} plazas</div>
                 </div>
 
-                <Button variant="primary" size="lg" iconRight="arrowRight" style={{ width: "100%" }}>Inscribirme</Button>
+                <Button variant="primary" size="lg" iconRight="arrowRight" style={{ width: "100%" }} onClick={go("contacto")}>Inscribirme</Button>
                 <button style={{ width: "100%", marginTop: 10, background: "transparent", border: "1px solid var(--color-border-default)", borderRadius: "var(--radius-md)", padding: "12px 16px", fontFamily: "var(--font-family-primary)", fontSize: 15, fontWeight: 700, color: "var(--color-brand-primary)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                   <Icon name="send" size={16} /> Compartir
                 </button>

@@ -99,7 +99,7 @@ const Header = ({ current = "inicio", onNavigate }) => {
           <button aria-label="Buscar" className="header-search" style={{ width: 40, height: 40, borderRadius: "50%", border: "none", background: "transparent", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--color-brand-primary)", cursor: "pointer" }}>
             <Icon name="search" size={20} />
           </button>
-          <Button variant="primary">Inscríbete</Button>
+          <Button variant="primary" onClick={(e) => go(e, "actividades")}>Inscríbete</Button>
           <button
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={menuOpen}

@@ -223,6 +223,7 @@ const TimelineRow = ({ activity }) => {
   return (
     <article
       className="timeline-row"
+      onClick={() => { window.location.href = "actividad.html"; }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
