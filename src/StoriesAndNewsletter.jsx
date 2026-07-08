@@ -284,7 +284,7 @@ const NewsletterBand = () => {
                 </div>
                 <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.5, marginTop: 8 }}>
                   <input type="checkbox" required style={{ marginTop: 3, accentColor: "#E87B00" }} />
-                  <span>He leído la <a style={{ color: "#fff", textDecoration: "underline", textUnderlineOffset: 3 }}>política de privacidad</a> y acepto el tratamiento de mis datos.</span>
+                  <span>He leído la <a href="privacidad.html" style={{ color: "#fff", textDecoration: "underline", textUnderlineOffset: 3 }}>política de privacidad</a> y acepto el tratamiento de mis datos.</span>
                 </label>
               </form>
             )}

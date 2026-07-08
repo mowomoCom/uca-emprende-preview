@@ -225,10 +225,10 @@ const Footer = () => {
         <div className="footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 0 32px", fontSize: 12, color: "rgba(255,255,255,0.5)", flexWrap: "wrap", gap: 12 }}>
           <span>© {new Date().getFullYear()} Universidad de Cádiz · Cátedra de Emprendedores</span>
           <ul style={{ listStyle: "none", display: "flex", gap: 24, margin: 0, padding: 0 }}>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Aviso legal</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Privacidad</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Cookies</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Accesibilidad</a></li>
+            <li><a href="aviso-legal.html" style={{ color: "inherit", textDecoration: "none" }}>Aviso legal</a></li>
+            <li><a href="privacidad.html" style={{ color: "inherit", textDecoration: "none" }}>Privacidad</a></li>
+            <li><a href="cookies.html" style={{ color: "inherit", textDecoration: "none" }}>Cookies</a></li>
+            <li><a href="accesibilidad.html" style={{ color: "inherit", textDecoration: "none" }}>Accesibilidad</a></li>
           </ul>
         </div>
       </div>
@@ -247,6 +247,11 @@ const UCA_PAGES = {
   blog: "blog.html",
   articulo: "articulo.html",
   contacto: "contacto.html",
+  programa: "programa.html",
+  "aviso-legal": "aviso-legal.html",
+  privacidad: "privacidad.html",
+  cookies: "cookies.html",
+  accesibilidad: "accesibilidad.html",
 };
 const ucaNavigate = (id) => { const u = UCA_PAGES[id]; if (u) window.location.href = u; };
 

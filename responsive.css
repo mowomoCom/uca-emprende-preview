@@ -144,4 +144,16 @@ img { max-width: 100%; }
 
   /* Cuerpo del artículo: márgenes cómodos en móvil */
   .art-body { max-width: 100% !important; }
+
+  /* Legal y single de programa */
+  .leg-h1, .pgs-h1 { font-size: clamp(36px, 10vw, 52px) !important; }
+  .leg-grid, .pgs-hero-grid, .pgs-body-grid,
+  .pgs-includes-grid, .pgs-related-grid { grid-template-columns: 1fr !important; }
+  .leg-index { position: static !important; margin-bottom: 32px; }
+  .pgs-aside { position: static !important; }
+}
+
+/* Tablet: rejillas del single de programa a 2 columnas */
+@media (min-width: 641px) and (max-width: 1080px) {
+  .pgs-related-grid { grid-template-columns: 1fr 1fr !important; }
 }

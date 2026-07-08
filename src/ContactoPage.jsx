@@ -79,7 +79,7 @@ const ContactoPage = ({ onNavigate }) => {
                   <div><label style={labelStyle}>Mensaje</label><textarea required rows={5} placeholder="Cuéntanos en qué punto estás y cómo podemos ayudarte." style={{ ...inputStyle, resize: "vertical" }} /></div>
                   <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
                     <input required type="checkbox" style={{ marginTop: 3, accentColor: "#E87B00" }} />
-                    <span>He leído la <a href="#" style={{ color: "var(--color-brand-primary)", fontWeight: 700, textDecoration: "underline", textUnderlineOffset: 3 }}>política de privacidad</a> y acepto el tratamiento de mis datos.</span>
+                    <span>He leído la <a href="privacidad.html" style={{ color: "var(--color-brand-primary)", fontWeight: 700, textDecoration: "underline", textUnderlineOffset: 3 }}>política de privacidad</a> y acepto el tratamiento de mis datos.</span>
                   </label>
                   <div><Button type="submit" variant="primary" size="lg" iconRight="send">Enviar mensaje</Button></div>
                 </form>

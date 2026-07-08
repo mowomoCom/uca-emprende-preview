@@ -101,7 +101,7 @@ const ProgramasPage = ({ onNavigate }) => {
             </h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {PROGRAMS.map((p) => <ProgramRow key={p.title} program={p} onOpen={go("contacto")} />)}
+            {PROGRAMS.map((p) => <ProgramRow key={p.title} program={p} onOpen={go("programa")} />)}
           </div>
         </div>
       </section>
